@@ -870,6 +870,66 @@ button:disabled {
 
 }
 
+.activity-layout {
+  display: grid;
+  grid-template-columns: minmax(260px, 1fr) minmax(0, 2fr);
+  gap: 24px;
+  align-items: start;
+}
+
+.activity-reference-panel {
+  position: sticky;
+  top: 16px;
+  align-self: start;
+}
+
+.activity-work-panel {
+  min-width: 0;
+}
+
+.activity-work-panel #ideaSection,
+.activity-work-panel #instructionSection,
+.activity-work-panel #waitingBox,
+.activity-work-panel #consolidationSection {
+  width: 100%;
+}
+
+
+/* =========================================================
+   PORTRAIT iPAD / NARROW SCREEN
+========================================================= */
+
+@media (max-width: 800px) {
+
+  .activity-layout {
+    display: block;
+  }
+
+  .activity-reference-panel {
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    padding-bottom: 12px;
+  }
+
+  .activity-reference-panel .top-bar {
+    margin-bottom: 8px;
+  }
+
+  .activity-reference-panel .topic-box {
+    margin-bottom: 0;
+  }
+
+  .activity-reference-panel #topicImage {
+    max-height: 220px;
+  }
+
+  .activity-work-panel {
+    margin-top: 16px;
+  }
+
+}
+
 </style>
 
 </head>
@@ -954,490 +1014,532 @@ button:disabled {
 
   <div class="container">
 
-    <div class="top-bar">
+    <div class="activity-layout">
 
-      <strong id="groupName">
-        Group
-      </strong>
+      <!-- ==================================================
+           LEFT: QUESTION / TOPIC REFERENCE
+      ================================================== -->
 
-      <div
-        id="studentName"
-        class="student-name"
-      ></div>
+      <div class="activity-reference-panel">
 
-      <div
-        id="roundBadge"
-        class="round-badge"
-        style="display:none;"
-      ></div>
+        <div class="top-bar">
 
-    </div>
-
-
-    <div class="topic-box">
-
-      <h2>Today's Question</h2>
-
-      <div
-        id="topic"
-        class="topic"
-      ></div>
-
-    </div>
-
-
-    <div
-      id="pausedBox"
-      class="paused-box"
-      style="display:none;"
-    >
-
-      <h2>⏸ Activity Paused</h2>
-
-      <p>
-        Please wait for your teacher to continue.
-      </p>
-
-    </div>
-
-
-    <!-- ORIGINAL IDEA -->
-
-    <div id="ideaSection">
-
-      <div class="cloud">
-
-        <div class="cloud-title">
-          My Original Idea
-        </div>
-
-        <textarea
-          id="ideaInput"
-          class="idea-input"
-          placeholder="Write your original idea here..."
-        ></textarea>
-
-        <div
-          id="saveStatus"
-          class="save-status"
-        ></div>
-
-        <button
-          id="submitIdeaButton"
-          class="submit-button"
-        >
-          SUBMIT MY IDEA
-        </button>
-
-        <div
-          id="ideaLockedMessage"
-          class="locked-message"
-          style="display:none;"
-        >
-          🔒 Your original idea is locked because the group has moved to the next round.
-        </div>
-
-      </div>
-
-    </div>
-
-
-    <!-- RESPONSE -->
-
-    <div
-      id="instructionSection"
-      style="display:none;"
-    >
-
-      <div
-        id="instructionBox"
-        class="instruction-box"
-      >
-
-        <div
-          id="instructionSymbol"
-          class="instruction-symbol"
-        ></div>
-
-        <div
-          id="instructionTitle"
-          class="instruction-title"
-        ></div>
-
-        <div
-          id="instructionDescription"
-          class="instruction-description"
-        ></div>
-
-      </div>
-
-
-      <div class="response-section">
-
-        <div class="response-cloud">
-
-          <div class="response-title">
-            Your Assigned Peer
-          </div>
+          <strong id="groupName">
+            Group
+          </strong>
 
           <div
-            id="targetStudentLabel"
-            class="target-label"
-          >
-            Read the idea below.
-          </div>
-
-          <div
-            id="targetIdea"
-            class="target-idea"
-          >
-            Loading...
-          </div>
-
-          <textarea
-            id="responseInput"
-            class="response-input"
-            placeholder="Write your response here..."
-          ></textarea>
-
-          <div
-            id="responseSaveStatus"
-            class="save-status"
-          ></div>
-
-          <button
-            id="submitResponseButton"
-            class="response-submit-button"
-          >
-            SUBMIT RESPONSE
-          </button>
-
-          <div
-            id="responseLockedMessage"
-            class="locked-message"
-            style="display:none;"
+            id="studentName"
+            class="student-name"
           ></div>
 
           <div
-            id="roundReadyMessage"
-            class="round-ready-message"
+            id="roundBadge"
+            class="round-badge"
             style="display:none;"
+          ></div>
+
+        </div>
+
+
+        <div class="topic-box">
+
+          <h2>Today's Question</h2>
+
+          <div
+            id="topic"
+            class="topic"
+          ></div>
+
+
+          <img
+            id="topicImage"
+            alt="Question / Topic image"
+            style="
+              display:none;
+              max-width:100%;
+              max-height:320px;
+              margin:16px auto 0;
+              border-radius:10px;
+              object-fit:contain;
+              cursor:pointer;
+            "
+          />
+
+        </div>
+
+      </div>
+
+
+      <!-- ==================================================
+           RIGHT: STUDENT WORK
+      ================================================== -->
+
+      <div class="activity-work-panel">
+
+
+        <div
+          id="pausedBox"
+          class="paused-box"
+          style="display:none;"
+        >
+
+          <h2>⏸ Activity Paused</h2>
+
+          <p>
+            Please wait for your teacher to continue.
+          </p>
+
+        </div>
+
+
+        <!-- ==================================================
+             ORIGINAL IDEA
+        ================================================== -->
+
+        <div id="ideaSection">
+
+          <div class="cloud">
+
+            <div class="cloud-title">
+              My Original Idea
+            </div>
+
+            <textarea
+              id="ideaInput"
+              class="idea-input"
+              placeholder="Write your original idea here..."
+            ></textarea>
+
+            <div
+              id="saveStatus"
+              class="save-status"
+            ></div>
+
+            <button
+              id="submitIdeaButton"
+              class="submit-button"
+            >
+              SUBMIT MY IDEA
+            </button>
+
+            <div
+              id="ideaLockedMessage"
+              class="locked-message"
+              style="display:none;"
+            >
+              🔒 Your original idea is locked because the group has moved to the next round.
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <!-- ==================================================
+             RESPONSE
+        ================================================== -->
+
+        <div
+          id="instructionSection"
+          style="display:none;"
+        >
+
+          <div
+            id="instructionBox"
+            class="instruction-box"
           >
-            ✓ Your response is submitted.
+
+            <div
+              id="instructionSymbol"
+              class="instruction-symbol"
+            ></div>
+
+            <div
+              id="instructionTitle"
+              class="instruction-title"
+            ></div>
+
+            <div
+              id="instructionDescription"
+              class="instruction-description"
+            ></div>
+
+          </div>
+
+
+          <div class="response-section">
+
+            <div class="response-cloud">
+
+              <div class="response-title">
+                Your Assigned Peer
+              </div>
+
+              <div
+                id="targetStudentLabel"
+                class="target-label"
+              >
+                Read the idea below.
+              </div>
+
+              <div
+                id="targetIdea"
+                class="target-idea"
+              >
+                Loading...
+              </div>
+
+              <textarea
+                id="responseInput"
+                class="response-input"
+                placeholder="Write your response here..."
+              ></textarea>
+
+              <div
+                id="responseSaveStatus"
+                class="save-status"
+              ></div>
+
+              <button
+                id="submitResponseButton"
+                class="response-submit-button"
+              >
+                SUBMIT RESPONSE
+              </button>
+
+              <div
+                id="responseLockedMessage"
+                class="locked-message"
+                style="display:none;"
+              ></div>
+
+              <div
+                id="roundReadyMessage"
+                class="round-ready-message"
+                style="display:none;"
+              >
+                ✓ Your response is submitted.
+              </div>
+
+            </div>
+
           </div>
 
         </div>
 
-      </div>
 
-    </div>
-
-
-    <!-- ==================================================
-         CONSOLIDATION
-    ================================================== -->
-
-    <div
-      id="consolidationSection"
-      class="consolidation-section"
-    >
-
-      <div class="consolidation-header">
-
-        <h2>
-          🧠 Group Consolidation
-        </h2>
-
-        <p>
-          Now look across all the ideas and responses your group
-          developed. Discuss how the group's thinking has changed,
-          then work together to create a stronger understanding.
-        </p>
-
-      </div>
-
-
-      <!-- GROUP KNOWLEDGE -->
-
-      <div
-        id="knowledgeGrid"
-        class="knowledge-grid"
-      ></div>
-
-
-      <!-- DISCUSS -->
-
-      <div class="discussion-section">
-
-        <h2>
-          💬 Discuss Together
-        </h2>
-
-        <div class="discussion-intro">
-          Talk through these questions with your group before writing
-          your consolidated understanding.
-        </div>
-
-
-        <details class="discussion-prompt">
-
-          <summary>
-            🔎 What ideas do we agree with?
-          </summary>
-
-          <div class="discussion-prompt-content">
-            Which ideas seem convincing? What evidence or reasoning
-            makes you agree with them?
-          </div>
-
-        </details>
-
-
-        <details class="discussion-prompt">
-
-          <summary>
-            🔄 Did anyone change or improve their thinking?
-          </summary>
-
-          <div class="discussion-prompt-content">
-            Look at the original ideas and the responses. Did anyone
-            add something that made an idea clearer, stronger or more
-            complete?
-          </div>
-
-        </details>
-
-
-        <details class="discussion-prompt">
-
-          <summary>
-            ⚡ What disagreements remain?
-          </summary>
-
-          <div class="discussion-prompt-content">
-            Are there ideas that your group still disagrees about?
-            What reasons were given on each side?
-          </div>
-
-        </details>
-
-
-        <details class="discussion-prompt">
-
-          <summary>
-            💡 What new ideas or understanding emerged?
-          </summary>
-
-          <div class="discussion-prompt-content">
-            Is there something your group understands now that was not
-            present in any of the original ideas?
-          </div>
-
-        </details>
-
-      </div>
-
-
-      <!-- BUILD OUR UNDERSTANDING -->
-
-      <div class="group-consolidation-box">
-
-        <h2>
-          🧠 Build Our Understanding
-        </h2>
-
-        <div class="group-consolidation-instruction">
-
-          Work together to create one strong statement that represents
-          what your group now understands.
-
-        </div>
-
-
-        <!-- WRITER STATUS -->
+        <!-- ==================================================
+             CONSOLIDATION
+        ================================================== -->
 
         <div
-          id="consolidationWriterBanner"
-          class="consolidation-writer-banner"
-          style="display:none;"
-        ></div>
+          id="consolidationSection"
+          class="consolidation-section"
+        >
+
+          <div class="consolidation-header">
+
+            <h2>
+              🧠 Group Consolidation
+            </h2>
+
+            <p>
+              Now look across all the ideas and responses your group
+              developed. Discuss how the group's thinking has changed,
+              then work together to create a stronger understanding.
+            </p>
+
+          </div>
+
+
+          <!-- GROUP KNOWLEDGE -->
+
+          <div
+            id="knowledgeGrid"
+            class="knowledge-grid"
+          ></div>
+
+
+          <!-- DISCUSS -->
+
+          <div class="discussion-section">
+
+            <h2>
+              💬 Discuss Together
+            </h2>
+
+            <div class="discussion-intro">
+              Talk through these questions with your group before writing
+              your consolidated understanding.
+            </div>
+
+
+            <details class="discussion-prompt">
+
+              <summary>
+                🔎 What ideas do we agree with?
+              </summary>
+
+              <div class="discussion-prompt-content">
+                Which ideas seem convincing? What evidence or reasoning
+                makes you agree with them?
+              </div>
+
+            </details>
+
+
+            <details class="discussion-prompt">
+
+              <summary>
+                🔄 Did anyone change or improve their thinking?
+              </summary>
+
+              <div class="discussion-prompt-content">
+                Look at the original ideas and the responses. Did anyone
+                add something that made an idea clearer, stronger or more
+                complete?
+              </div>
+
+            </details>
+
+
+            <details class="discussion-prompt">
+
+              <summary>
+                ⚡ What disagreements remain?
+              </summary>
+
+              <div class="discussion-prompt-content">
+                Are there ideas that your group still disagrees about?
+                What reasons were given on each side?
+              </div>
+
+            </details>
+
+
+            <details class="discussion-prompt">
+
+              <summary>
+                💡 What new ideas or understanding emerged?
+              </summary>
+
+              <div class="discussion-prompt-content">
+                Is there something your group understands now that was not
+                present in any of the original ideas?
+              </div>
+
+            </details>
+
+          </div>
+
+
+          <!-- BUILD OUR UNDERSTANDING -->
+
+          <div class="group-consolidation-box">
+
+            <h2>
+              🧠 Build Our Understanding
+            </h2>
+
+            <div class="group-consolidation-instruction">
+
+              Work together to create one strong statement that represents
+              what your group now understands.
+
+            </div>
+
+
+            <!-- WRITER STATUS -->
+
+            <div
+              id="consolidationWriterBanner"
+              class="consolidation-writer-banner"
+              style="display:none;"
+            ></div>
+
+            <div
+              id="consolidationReadonlyBanner"
+              class="consolidation-readonly-banner"
+              style="display:none;"
+            >
+              👀 <strong>Your role is to discuss and contribute ideas.</strong>
+              <br>
+              The designated group writer will type the group's final
+              consolidation. Please discuss your ideas with the group writer.
+            </div>
+
+
+            <textarea
+              id="consolidationInput"
+              placeholder="Write your group's consolidated thinking here..."
+            ></textarea>
+
+
+            <div class="consolidation-checklist">
+
+              <div class="consolidation-checklist-title">
+                Before submitting, check your group's thinking:
+              </div>
+
+
+              <label class="checklist-item">
+
+                <input
+                  type="checkbox"
+                  class="consolidation-check"
+                >
+
+                <span>
+                  We included or considered ideas from different group members.
+                </span>
+
+              </label>
+
+
+              <label class="checklist-item">
+
+                <input
+                  type="checkbox"
+                  class="consolidation-check"
+                >
+
+                <span>
+                  We explained our reasoning, not just our answer.
+                </span>
+
+              </label>
+
+
+              <label class="checklist-item">
+
+                <input
+                  type="checkbox"
+                  class="consolidation-check"
+                >
+
+                <span>
+                  We considered important disagreements or questions.
+                </span>
+
+              </label>
+
+
+              <label class="checklist-item">
+
+                <input
+                  type="checkbox"
+                  class="consolidation-check"
+                >
+
+                <span>
+                  Our statement shows what our group understands now.
+                </span>
+
+              </label>
+
+            </div>
+
+
+            <div
+              id="consolidationSaveStatus"
+              class="consolidation-save-status"
+            ></div>
+
+            <button
+              id="submitConsolidationButton"
+              class="consolidation-submit-button"
+            >
+              SUBMIT GROUP CONSOLIDATION
+            </button>
+
+            <div
+              id="consolidationSubmittedMessage"
+              class="consolidation-submitted-message"
+              style="display:none;"
+            ></div>
+
+          </div>
+
+
+          <!-- HOW DID OUR THINKING CHANGE? -->
+
+          <div class="thinking-change-section">
+
+            <h2>
+              🔄 How Did Our Thinking Change?
+            </h2>
+
+            <div class="thinking-change-intro">
+
+              Knowledge building is not only about getting an answer.
+              Think about how your group's understanding developed.
+
+            </div>
+
+
+            <div class="reflection-label">
+              At first, we thought...
+            </div>
+
+            <textarea
+              id="thinkingAtFirst"
+              class="reflection-input"
+              placeholder="What did your group initially think?"
+            ></textarea>
+
+
+            <div class="reflection-label">
+              Now we think...
+            </div>
+
+            <textarea
+              id="thinkingNow"
+              class="reflection-input"
+              placeholder="What does your group understand now?"
+            ></textarea>
+
+          </div>
+
+        </div>
+
+
+        <!-- ==================================================
+             WAITING
+        ================================================== -->
 
         <div
-          id="consolidationReadonlyBanner"
-          class="consolidation-readonly-banner"
+          id="waitingBox"
+          class="waiting"
           style="display:none;"
         >
-          👀 <strong>Your role is to discuss and contribute ideas.</strong>
-          <br>
-          The designated group writer will type the group's final
-          consolidation. Please discuss your ideas with the group writer.
-        </div>
 
+          <h2 id="waitingTitle">
+            ✅ Idea Submitted
+          </h2>
 
-        <textarea
-          id="consolidationInput"
-          placeholder="Write your group's consolidated thinking here..."
-        ></textarea>
+          <p id="waitingDescription">
+            Your original idea has been saved.
+          </p>
 
+          <p id="groupWaitingMessage">
+            Waiting for the other members of your group...
+          </p>
 
-        <div class="consolidation-checklist">
-
-          <div class="consolidation-checklist-title">
-            Before submitting, check your group's thinking:
-          </div>
-
-
-          <label class="checklist-item">
-
-            <input
-              type="checkbox"
-              class="consolidation-check"
-            >
-
-            <span>
-              We included or considered ideas from different group members.
-            </span>
-
-          </label>
-
-
-          <label class="checklist-item">
-
-            <input
-              type="checkbox"
-              class="consolidation-check"
-            >
-
-            <span>
-              We explained our reasoning, not just our answer.
-            </span>
-
-          </label>
-
-
-          <label class="checklist-item">
-
-            <input
-              type="checkbox"
-              class="consolidation-check"
-            >
-
-            <span>
-              We considered important disagreements or questions.
-            </span>
-
-          </label>
-
-
-          <label class="checklist-item">
-
-            <input
-              type="checkbox"
-              class="consolidation-check"
-            >
-
-            <span>
-              Our statement shows what our group understands now.
-            </span>
-
-          </label>
+          <p>
+            Your teacher will rotate the group when everyone is ready.
+          </p>
 
         </div>
 
 
-        <div
-          id="consolidationSaveStatus"
-          class="consolidation-save-status"
-        ></div>
+      </div><!-- end activity-work-panel -->
 
-        <button
-          id="submitConsolidationButton"
-          class="consolidation-submit-button"
-        >
-          SUBMIT GROUP CONSOLIDATION
-        </button>
+    </div><!-- end activity-layout -->
 
-        <div
-          id="consolidationSubmittedMessage"
-          class="consolidation-submitted-message"
-          style="display:none;"
-        ></div>
-
-      </div>
-
-
-      <!-- HOW DID OUR THINKING CHANGE? -->
-
-      <div class="thinking-change-section">
-
-        <h2>
-          🔄 How Did Our Thinking Change?
-        </h2>
-
-        <div class="thinking-change-intro">
-
-          Knowledge building is not only about getting an answer.
-          Think about how your group's understanding developed.
-
-        </div>
-
-
-        <div class="reflection-label">
-          At first, we thought...
-        </div>
-
-        <textarea
-          id="thinkingAtFirst"
-          class="reflection-input"
-          placeholder="What did your group initially think?"
-        ></textarea>
-
-
-        <div class="reflection-label">
-          Now we think...
-        </div>
-
-        <textarea
-          id="thinkingNow"
-          class="reflection-input"
-          placeholder="What does your group understand now?"
-        ></textarea>
-
-      </div>
-
-    </div>
-
-
-    <!-- WAITING -->
-
-    <div
-      id="waitingBox"
-      class="waiting"
-      style="display:none;"
-    >
-
-      <h2 id="waitingTitle">
-        ✅ Idea Submitted
-      </h2>
-
-      <p id="waitingDescription">
-        Your original idea has been saved.
-      </p>
-
-      <p id="groupWaitingMessage">
-        Waiting for the other members of your group...
-      </p>
-
-      <p>
-        Your teacher will rotate the group when everyone is ready.
-      </p>
-
-    </div>
-
-  </div>
+  </div><!-- end container -->
 
 </section>
-
 
 <script>
 
@@ -2052,7 +2154,8 @@ async function loadStudentActivity() {
         title,
         topic,
         status,
-        is_paused
+        is_paused,
+        question_image_path
       `)
       .eq(
         "id",
@@ -2086,6 +2189,58 @@ async function loadStudentActivity() {
   ).textContent =
     session.topic ||
     "No question has been added yet.";
+
+
+
+  // ---------------------------------------------------------
+  // Question / Topic Image
+  // ---------------------------------------------------------
+
+  const topicImage =
+    document.getElementById(
+      "topicImage"
+    );
+
+  if (topicImage) {
+
+    if (session.question_image_path) {
+
+      const {
+        data: signedUrlData,
+        error: signedUrlError
+      } =
+        await supabaseClient
+          .storage
+          .from("kb-question-images")
+          .createSignedUrl(
+            session.question_image_path,
+            60 * 60
+          );
+
+      if (signedUrlError) {
+        console.error(
+          "Could not load question image:",
+          signedUrlError
+        );
+
+        topicImage.style.display =
+          "none";
+
+      } else {
+
+        topicImage.src =
+          signedUrlData.signedUrl;
+
+        topicImage.style.display =
+          "block";
+      }
+
+    } else {
+
+      topicImage.style.display =
+        "none";
+    }
+  }
 
   document
     .getElementById("joinScreen")
