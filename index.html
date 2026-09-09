@@ -930,6 +930,29 @@ button:disabled {
 
 }
 
+/* =========================================================
+   FULL-WIDTH GROUP CONSOLIDATION
+========================================================= */
+
+.activity-layout:has(
+  #consolidationSection[style*="display: block"]
+) {
+  display: block;
+}
+
+.activity-layout:has(
+  #consolidationSection[style*="display: block"]
+) .activity-reference-panel {
+  display: none;
+}
+
+.activity-layout:has(
+  #consolidationSection[style*="display: block"]
+) .activity-work-panel {
+  width: 100%;
+  max-width: none;
+}
+
 </style>
 
 </head>
