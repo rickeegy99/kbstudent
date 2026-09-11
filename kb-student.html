@@ -1,0 +1,5255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+  name="viewport"
+  content="width=device-width, initial-scale=1.0"
+>
+
+<title>Knowledge Building</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #f5f7fb;
+  color: #222;
+}
+
+.screen {
+  display: none;
+  min-height: 100vh;
+  padding: 30px;
+}
+
+.screen.active {
+  display: block;
+}
+
+.container {
+  max-width: 1400px;
+  margin: auto;
+}
+
+.join-card {
+  background: white;
+  max-width: 500px;
+  margin: 50px auto;
+  padding: 35px;
+  border-radius: 20px;
+  box-shadow: 0 5px 25px rgba(0,0,0,0.08);
+}
+
+h1 {
+  text-align: center;
+  margin-top: 0;
+}
+
+label {
+  display: block;
+  margin-top: 18px;
+  font-weight: bold;
+}
+
+input,
+select,
+textarea,
+button {
+  width: 100%;
+  font-size: 20px;
+  padding: 14px;
+  margin-top: 7px;
+  border-radius: 10px;
+  border: 2px solid #d7dce5;
+}
+
+button {
+  cursor: pointer;
+  font-weight: bold;
+  background: #333;
+  color: white;
+  border: none;
+}
+
+button:hover {
+  opacity: 0.9;
+}
+
+button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.message {
+  margin-top: 18px;
+  padding: 12px;
+  border-radius: 10px;
+  background: #f0f2f5;
+  white-space: pre-wrap;
+}
+
+
+/* ==================================================
+   ACTIVITY
+================================================== */
+
+.top-bar {
+  background: white;
+  padding: 18px 25px;
+  border-radius: 16px;
+  margin-bottom: 20px;
+  box-shadow: 0 3px 15px rgba(0,0,0,0.06);
+}
+
+.student-name {
+  font-size: 18px;
+  color: #666;
+  margin-top: 5px;
+}
+
+.round-badge {
+  display: inline-block;
+  margin-top: 10px;
+  padding: 7px 14px;
+  border-radius: 20px;
+  background: #eef2ff;
+  font-weight: bold;
+  color: #3730a3;
+}
+
+
+/* ==================================================
+   TOPIC
+================================================== */
+
+.topic-box {
+  background: white;
+  padding: 25px;
+  border-radius: 18px;
+  margin-bottom: 25px;
+  box-shadow: 0 3px 15px rgba(0,0,0,0.06);
+}
+
+.topic-box h2 {
+  margin-top: 0;
+}
+
+.topic {
+  font-size: 30px;
+  font-weight: bold;
+}
+
+
+/* ==================================================
+   PAUSED
+================================================== */
+
+.paused-box {
+  text-align: center;
+  background: #fff7ed;
+  border: 2px solid #fed7aa;
+  padding: 25px;
+  border-radius: 18px;
+  margin-bottom: 25px;
+}
+
+.paused-box h2 {
+  margin-top: 0;
+}
+
+
+/* ==================================================
+   INSTRUCTION
+================================================== */
+
+.instruction-box {
+  background: white;
+  padding: 25px;
+  border-radius: 18px;
+  margin-bottom: 25px;
+  box-shadow: 0 3px 15px rgba(0,0,0,0.06);
+  text-align: center;
+}
+
+.instruction-symbol {
+  font-size: 48px;
+  font-weight: bold;
+  line-height: 1;
+  margin-bottom: 10px;
+}
+
+.instruction-title {
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.instruction-description {
+  margin-top: 10px;
+  font-size: 20px;
+  color: #555;
+}
+
+
+/* ==================================================
+   INSTRUCTION COLOURS
+================================================== */
+
+.instruction-box.add-on {
+  background: #f0fdf4;
+  border: 3px solid #bbf7d0;
+}
+
+.instruction-box.add-on .instruction-symbol,
+.instruction-box.add-on .instruction-title {
+  color: #15803d;
+}
+
+.instruction-box.disagree {
+  background: #faf5ff;
+  border: 3px solid #e9d5ff;
+}
+
+.instruction-box.disagree .instruction-symbol,
+.instruction-box.disagree .instruction-title {
+  color: #7e22ce;
+}
+
+.instruction-box.question {
+  background: #fff7ed;
+  border: 3px solid #fed7aa;
+}
+
+.instruction-box.question .instruction-symbol,
+.instruction-box.question .instruction-title {
+  color: #c2410c;
+}
+
+
+/* ==================================================
+   IDEA CLOUD
+================================================== */
+
+.cloud {
+  position: relative;
+  background: white;
+  border: 4px solid #333;
+  border-radius: 45% 55% 50% 50%;
+  padding: 30px;
+  min-height: 300px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+}
+
+.cloud-title {
+  text-align: center;
+  font-size: 26px;
+  font-weight: bold;
+  margin-bottom: 15px;
+}
+
+.idea-input {
+  width: 100%;
+  min-height: 180px;
+  resize: vertical;
+  font-size: 20px;
+  border: 2px solid #ccc;
+  padding: 15px;
+}
+
+.idea-input:disabled {
+  background: #f1f3f5;
+  color: #444;
+  cursor: not-allowed;
+}
+
+.save-status {
+  text-align: center;
+  margin-top: 10px;
+  min-height: 25px;
+  font-size: 17px;
+}
+
+.submit-button {
+  margin-top: 15px;
+  background: #2563eb;
+}
+
+
+/* ==================================================
+   RESPONSE
+================================================== */
+
+.response-section {
+  margin-top: 30px;
+}
+
+.response-cloud {
+  background: white;
+  border: 4px solid #555;
+  border-radius: 30px;
+  padding: 30px;
+  min-height: 320px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+}
+
+.response-title {
+  text-align: center;
+  font-size: 26px;
+  font-weight: bold;
+  margin-bottom: 8px;
+}
+
+.target-label {
+  text-align: center;
+  font-size: 20px;
+  color: #555;
+  margin-bottom: 15px;
+}
+
+.target-idea {
+  background: #f8fafc;
+  border: 2px solid #d7dce5;
+  border-radius: 14px;
+  padding: 18px;
+  font-size: 20px;
+  line-height: 1.5;
+  white-space: pre-wrap;
+  margin-bottom: 20px;
+}
+
+.response-input {
+  width: 100%;
+  min-height: 150px;
+  resize: vertical;
+  font-size: 20px;
+  border: 2px solid #ccc;
+  padding: 15px;
+}
+
+.response-input:disabled {
+  background: #f1f3f5;
+  color: #444;
+  cursor: not-allowed;
+}
+
+.response-submit-button {
+  margin-top: 15px;
+  background: #16a34a;
+}
+
+.locked-message {
+  text-align: center;
+  margin-top: 12px;
+  color: #666;
+  font-size: 17px;
+}
+
+.round-ready-message {
+  text-align: center;
+  margin-top: 12px;
+  padding: 12px;
+  border-radius: 10px;
+  background: #f0fdf4;
+  color: #166534;
+  font-size: 17px;
+  font-weight: bold;
+}
+
+
+/* ==================================================
+   WAITING
+================================================== */
+
+.waiting {
+  text-align: center;
+  background: white;
+  padding: 35px;
+  border-radius: 18px;
+  margin-top: 25px;
+}
+
+.waiting h2 {
+  margin-top: 0;
+}
+
+
+/* ==================================================
+   CONSOLIDATION
+================================================== */
+
+.consolidation-section {
+  display: none;
+}
+
+.consolidation-header {
+  background: white;
+  padding: 25px;
+  border-radius: 18px;
+  margin-bottom: 20px;
+  box-shadow: 0 3px 15px rgba(0,0,0,0.06);
+  text-align: center;
+}
+
+.consolidation-header h2 {
+  margin-top: 0;
+  font-size: 32px;
+}
+
+.consolidation-header p {
+  font-size: 20px;
+  line-height: 1.5;
+  margin-bottom: 0;
+}
+
+
+/* ==================================================
+   KNOWLEDGE GRID
+================================================== */
+
+.knowledge-grid {
+  display: grid;
+  grid-template-columns: repeat(
+    var(--student-count),
+    minmax(280px, 1fr)
+  );
+  gap: 18px;
+  margin-bottom: 30px;
+}
+
+.knowledge-column {
+  background: white;
+  border-radius: 18px;
+  border: 3px solid #d7dce5;
+  overflow: hidden;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.07);
+  height: 620px;
+  display: flex;
+  flex-direction: column;
+}
+
+.knowledge-column-header {
+  background: #eef2ff;
+  padding: 18px;
+  text-align: center;
+  flex-shrink: 0;
+}
+
+.knowledge-column-header h3 {
+  margin: 0;
+  font-size: 22px;
+}
+
+.original-idea-label {
+  font-size: 15px;
+  font-weight: bold;
+  color: #555;
+  margin-top: 5px;
+}
+
+.knowledge-scroll {
+  overflow-y: auto;
+  padding: 16px;
+  flex: 1;
+}
+
+.original-idea-card {
+  background: #f8fafc;
+  border: 3px solid #333;
+  border-radius: 14px;
+  padding: 18px;
+  margin-bottom: 18px;
+}
+
+.original-idea-card h4 {
+  margin: 0 0 10px 0;
+  font-size: 18px;
+}
+
+.original-idea-text {
+  font-size: 20px;
+  line-height: 1.5;
+  white-space: pre-wrap;
+}
+
+
+/* ==================================================
+   BUILDING RESPONSES
+================================================== */
+
+.building-response {
+  border: 3px solid #d7dce5;
+  border-radius: 14px;
+  margin-bottom: 14px;
+  overflow: hidden;
+  background: white;
+}
+
+.building-response-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+}
+
+.response-symbol-small {
+  font-size: 25px;
+  font-weight: bold;
+  min-width: 32px;
+  text-align: center;
+}
+
+.response-round {
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.response-author {
+  font-size: 15px;
+  font-weight: bold;
+  margin-left: auto;
+}
+
+.building-response-text {
+  padding: 13px;
+  font-size: 18px;
+  line-height: 1.45;
+  white-space: pre-wrap;
+}
+
+
+/* ==================================================
+   RESPONSE TYPE COLOURS
+================================================== */
+
+.building-response.add-on {
+  background: #f0fdf4;
+  border-color: #bbf7d0;
+}
+
+.building-response.add-on .building-response-header {
+  background: #dcfce7;
+}
+
+.building-response.add-on .response-symbol-small,
+.building-response.add-on .response-round {
+  color: #15803d;
+}
+
+
+.building-response.disagree {
+  background: #faf5ff;
+  border-color: #e9d5ff;
+}
+
+.building-response.disagree .building-response-header {
+  background: #f3e8ff;
+}
+
+.building-response.disagree .response-symbol-small,
+.building-response.disagree .response-round {
+  color: #7e22ce;
+}
+
+
+.building-response.question {
+  background: #fff7ed;
+  border-color: #fed7aa;
+}
+
+.building-response.question .building-response-header {
+  background: #ffedd5;
+}
+
+.building-response.question .response-symbol-small,
+.building-response.question .response-round {
+  color: #c2410c;
+}
+
+
+.no-responses {
+  text-align: center;
+  color: #777;
+  font-size: 17px;
+  padding: 15px;
+}
+
+
+/* ==================================================
+   DISCUSSION
+================================================== */
+
+.discussion-section {
+  background: white;
+  border-radius: 20px;
+  padding: 25px;
+  margin-bottom: 25px;
+  box-shadow: 0 5px 20px rgba(0,0,0,0.07);
+}
+
+.discussion-section h2 {
+  text-align: center;
+  margin-top: 0;
+  font-size: 28px;
+}
+
+.discussion-intro {
+  text-align: center;
+  color: #555;
+  font-size: 19px;
+  line-height: 1.5;
+  margin-bottom: 20px;
+}
+
+.discussion-prompt {
+  border: 2px solid #d7dce5;
+  border-radius: 14px;
+  margin-bottom: 12px;
+  overflow: hidden;
+  background: #fafbfc;
+}
+
+.discussion-prompt summary {
+  cursor: pointer;
+  padding: 17px 18px;
+  font-size: 20px;
+  font-weight: bold;
+  list-style: none;
+}
+
+.discussion-prompt summary::-webkit-details-marker {
+  display: none;
+}
+
+.discussion-prompt summary::after {
+  content: "＋";
+  float: right;
+  font-size: 22px;
+}
+
+.discussion-prompt[open] summary::after {
+  content: "−";
+}
+
+.discussion-prompt-content {
+  padding: 0 18px 18px 18px;
+  font-size: 19px;
+  line-height: 1.5;
+  color: #555;
+}
+
+
+/* ==================================================
+   GROUP CONSOLIDATION BOX
+================================================== */
+
+.group-consolidation-box {
+  background: white;
+  border: 4px solid #333;
+  border-radius: 20px;
+  padding: 25px;
+  margin-top: 10px;
+  box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+}
+
+.group-consolidation-box h2 {
+  text-align: center;
+  margin-top: 0;
+  font-size: 28px;
+}
+
+.group-consolidation-instruction {
+  text-align: center;
+  font-size: 19px;
+  line-height: 1.5;
+  color: #555;
+  margin-bottom: 20px;
+}
+
+
+/* ==================================================
+   CONSOLIDATION WRITER
+================================================== */
+
+.consolidation-writer-banner {
+  background: #eef2ff;
+  border: 2px solid #c7d2fe;
+  border-radius: 14px;
+  padding: 15px 18px;
+  margin-bottom: 18px;
+  text-align: center;
+  font-size: 19px;
+  line-height: 1.45;
+}
+
+.consolidation-writer-banner strong {
+  color: #3730a3;
+}
+
+.consolidation-readonly-banner {
+  background: #f8fafc;
+  border: 2px solid #d7dce5;
+  border-radius: 14px;
+  padding: 15px 18px;
+  margin-bottom: 18px;
+  text-align: center;
+  font-size: 19px;
+  line-height: 1.45;
+  color: #555;
+}
+
+#consolidationInput {
+  min-height: 220px;
+  font-size: 21px;
+  line-height: 1.5;
+  resize: vertical;
+}
+
+#consolidationInput.read-only-consolidation {
+  background: #f1f3f5;
+  color: #333;
+  cursor: not-allowed;
+}
+
+
+/* ==================================================
+   CONSOLIDATION CHECKLIST
+================================================== */
+
+.consolidation-checklist {
+  margin-top: 20px;
+  padding: 18px;
+  background: #f8fafc;
+  border-radius: 14px;
+  border: 2px solid #e2e8f0;
+}
+
+.consolidation-checklist-title {
+  font-size: 19px;
+  font-weight: bold;
+  margin-bottom: 12px;
+}
+
+.checklist-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin: 10px 0;
+  font-size: 18px;
+  line-height: 1.4;
+}
+
+.checklist-item input {
+  width: 22px;
+  height: 22px;
+  margin: 1px 0 0 0;
+  flex-shrink: 0;
+}
+
+
+.consolidation-save-status {
+  text-align: center;
+  min-height: 25px;
+  margin-top: 8px;
+  font-size: 17px;
+}
+
+.consolidation-submit-button {
+  background: #7c3aed;
+  margin-top: 12px;
+}
+
+.consolidation-submitted-message {
+  text-align: center;
+  margin-top: 12px;
+  padding: 12px;
+  border-radius: 10px;
+  background: #f0fdf4;
+  color: #166534;
+  font-size: 17px;
+  font-weight: bold;
+}
+
+
+/* ==================================================
+   THINKING CHANGE
+================================================== */
+
+.thinking-change-section {
+  background: white;
+  border-radius: 20px;
+  padding: 25px;
+  margin-top: 25px;
+  margin-bottom: 25px;
+  box-shadow: 0 5px 20px rgba(0,0,0,0.07);
+}
+
+.thinking-change-section h2 {
+  text-align: center;
+  margin-top: 0;
+  font-size: 28px;
+}
+
+.thinking-change-intro {
+  text-align: center;
+  color: #555;
+  font-size: 19px;
+  line-height: 1.5;
+  margin-bottom: 20px;
+}
+
+.reflection-label {
+  font-size: 19px;
+  font-weight: bold;
+  margin-top: 18px;
+}
+
+.reflection-input {
+  min-height: 120px;
+  font-size: 20px;
+  line-height: 1.5;
+  resize: vertical;
+}
+
+
+/* ==================================================
+   MOBILE
+================================================== */
+
+@media (max-width: 1000px) {
+
+  .knowledge-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+}
+
+@media (max-width: 650px) {
+
+  .screen {
+    padding: 15px;
+  }
+
+  .join-card {
+    margin: 20px auto;
+    padding: 25px;
+  }
+
+  .topic {
+    font-size: 24px;
+  }
+
+  .cloud,
+  .response-cloud {
+    padding: 20px;
+  }
+
+  .instruction-title {
+    font-size: 24px;
+  }
+
+  .knowledge-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .knowledge-column {
+    height: 500px;
+  }
+
+  .consolidation-header h2 {
+    font-size: 27px;
+  }
+
+}
+
+.activity-layout {
+  display: grid;
+  grid-template-columns: minmax(260px, 1fr) minmax(0, 2fr);
+  gap: 24px;
+  align-items: start;
+}
+
+.activity-reference-panel {
+  position: sticky;
+  top: 16px;
+  align-self: start;
+}
+
+.activity-work-panel {
+  min-width: 0;
+}
+
+.activity-work-panel #ideaSection,
+.activity-work-panel #instructionSection,
+.activity-work-panel #waitingBox,
+.activity-work-panel #consolidationSection {
+  width: 100%;
+}
+
+
+/* =========================================================
+   PORTRAIT iPAD / NARROW SCREEN
+========================================================= */
+
+@media (max-width: 800px) {
+
+  .activity-layout {
+    display: block;
+  }
+
+  .activity-reference-panel {
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    padding-bottom: 12px;
+  }
+
+  .activity-reference-panel .top-bar {
+    margin-bottom: 8px;
+  }
+
+  .activity-reference-panel .topic-box {
+    margin-bottom: 0;
+  }
+
+  .activity-reference-panel #topicImage {
+    max-height: 220px;
+  }
+
+  .activity-work-panel {
+    margin-top: 16px;
+  }
+
+}
+
+/* =========================================================
+   FULL-WIDTH GROUP CONSOLIDATION
+========================================================= */
+
+.activity-layout:has(
+  #consolidationSection[style*="display: block"]
+) {
+  display: block;
+}
+
+.activity-layout:has(
+  #consolidationSection[style*="display: block"]
+) .activity-reference-panel {
+  display: none;
+}
+
+.activity-layout:has(
+  #consolidationSection[style*="display: block"]
+) .activity-work-panel {
+  width: 100%;
+  max-width: none;
+}
+
+</style>
+
+</head>
+
+<body>
+
+
+<!-- ==================================================
+     JOIN SCREEN
+================================================== -->
+
+<section
+  id="joinScreen"
+  class="screen active"
+>
+
+  <div class="join-card">
+
+    <h1>Knowledge Building</h1>
+
+    <p style="text-align:center;">
+      Join your teacher's activity
+    </p>
+
+    <label for="joinCode">
+      Activity Code
+    </label>
+
+    <input
+      id="joinCode"
+      inputmode="numeric"
+      maxlength="6"
+      placeholder="6-digit code"
+    >
+
+    <label for="studentSelect">
+      Your Name
+    </label>
+
+    <select id="studentSelect">
+
+      <option value="">
+        Enter activity code first
+      </option>
+
+    </select>
+
+    <label for="rejoinCode">
+      Personal Rejoin Code
+    </label>
+
+    <input
+      id="rejoinCode"
+      type="password"
+      placeholder="Your personal code"
+    >
+
+    <button id="joinButton">
+      JOIN ACTIVITY
+    </button>
+
+    <div
+      id="joinMessage"
+      class="message"
+    >
+      Enter your activity code.
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- ==================================================
+     ACTIVITY SCREEN
+================================================== -->
+
+<section
+  id="activityScreen"
+  class="screen"
+>
+
+  <div class="container">
+
+    <div class="activity-layout">
+
+      <!-- ==================================================
+           LEFT: QUESTION / TOPIC REFERENCE
+      ================================================== -->
+
+      <div class="activity-reference-panel">
+
+        <div class="top-bar">
+
+          <strong id="groupName">
+            Group
+          </strong>
+
+          <div
+            id="studentName"
+            class="student-name"
+          ></div>
+
+          <div
+            id="roundBadge"
+            class="round-badge"
+            style="display:none;"
+          ></div>
+
+        </div>
+
+
+        <div class="topic-box">
+
+          <h2>Today's Question</h2>
+
+          <div
+            id="topic"
+            class="topic"
+          ></div>
+
+
+          <img
+            id="topicImage"
+            alt="Question / Topic image"
+            style="
+              display:none;
+              max-width:100%;
+              max-height:320px;
+              margin:16px auto 0;
+              border-radius:10px;
+              object-fit:contain;
+              cursor:pointer;
+            "
+          />
+
+        </div>
+
+      </div>
+
+
+      <!-- ==================================================
+           RIGHT: STUDENT WORK
+      ================================================== -->
+
+      <div class="activity-work-panel">
+
+
+        <div
+          id="pausedBox"
+          class="paused-box"
+          style="display:none;"
+        >
+
+          <h2>⏸ Activity Paused</h2>
+
+          <p>
+            Please wait for your teacher to continue.
+          </p>
+
+        </div>
+
+
+        <!-- ==================================================
+             ORIGINAL IDEA
+        ================================================== -->
+
+        <div id="ideaSection">
+
+          <div class="cloud">
+
+            <div class="cloud-title">
+              My Original Idea
+            </div>
+
+            <textarea
+              id="ideaInput"
+              class="idea-input"
+              placeholder="Write your original idea here..."
+            ></textarea>
+
+            <div
+              id="saveStatus"
+              class="save-status"
+            ></div>
+
+            <button
+              id="submitIdeaButton"
+              class="submit-button"
+            >
+              SUBMIT MY IDEA
+            </button>
+
+            <div
+              id="ideaLockedMessage"
+              class="locked-message"
+              style="display:none;"
+            >
+              🔒 Your original idea is locked because the group has moved to the next round.
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <!-- ==================================================
+             RESPONSE
+        ================================================== -->
+
+        <div
+          id="instructionSection"
+          style="display:none;"
+        >
+
+          <div
+            id="instructionBox"
+            class="instruction-box"
+          >
+
+            <div
+              id="instructionSymbol"
+              class="instruction-symbol"
+            ></div>
+
+            <div
+              id="instructionTitle"
+              class="instruction-title"
+            ></div>
+
+            <div
+              id="instructionDescription"
+              class="instruction-description"
+            ></div>
+
+          </div>
+
+
+          <div class="response-section">
+
+            <div class="response-cloud">
+
+              <div class="response-title">
+                Your Assigned Peer
+              </div>
+
+              <div
+                id="targetStudentLabel"
+                class="target-label"
+              >
+                Read the idea below.
+              </div>
+
+              <div
+                id="targetIdea"
+                class="target-idea"
+              >
+                Loading...
+              </div>
+
+              <textarea
+                id="responseInput"
+                class="response-input"
+                placeholder="Write your response here..."
+              ></textarea>
+
+              <div
+                id="responseSaveStatus"
+                class="save-status"
+              ></div>
+
+              <button
+                id="submitResponseButton"
+                class="response-submit-button"
+              >
+                SUBMIT RESPONSE
+              </button>
+
+              <div
+                id="responseLockedMessage"
+                class="locked-message"
+                style="display:none;"
+              ></div>
+
+              <div
+                id="roundReadyMessage"
+                class="round-ready-message"
+                style="display:none;"
+              >
+                ✓ Your response is submitted.
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <!-- ==================================================
+             CONSOLIDATION
+        ================================================== -->
+
+        <div
+          id="consolidationSection"
+          class="consolidation-section"
+        >
+
+          <div class="consolidation-header">
+
+            <h2>
+              🧠 Group Consolidation
+            </h2>
+
+            <p>
+              Now look across all the ideas and responses your group
+              developed. Discuss how the group's thinking has changed,
+              then work together to create a stronger understanding.
+            </p>
+
+          </div>
+
+
+          <!-- GROUP KNOWLEDGE -->
+
+          <div
+            id="knowledgeGrid"
+            class="knowledge-grid"
+          ></div>
+
+
+          <!-- DISCUSS -->
+
+          <div class="discussion-section">
+
+            <h2>
+              💬 Discuss Together
+            </h2>
+
+            <div class="discussion-intro">
+              Talk through these questions with your group before writing
+              your consolidated understanding.
+            </div>
+
+
+            <details class="discussion-prompt">
+
+              <summary>
+                🔎 What ideas do we agree with?
+              </summary>
+
+              <div class="discussion-prompt-content">
+                Which ideas seem convincing? What evidence or reasoning
+                makes you agree with them?
+              </div>
+
+            </details>
+
+
+            <details class="discussion-prompt">
+
+              <summary>
+                🔄 Did anyone change or improve their thinking?
+              </summary>
+
+              <div class="discussion-prompt-content">
+                Look at the original ideas and the responses. Did anyone
+                add something that made an idea clearer, stronger or more
+                complete?
+              </div>
+
+            </details>
+
+
+            <details class="discussion-prompt">
+
+              <summary>
+                ⚡ What disagreements remain?
+              </summary>
+
+              <div class="discussion-prompt-content">
+                Are there ideas that your group still disagrees about?
+                What reasons were given on each side?
+              </div>
+
+            </details>
+
+
+            <details class="discussion-prompt">
+
+              <summary>
+                💡 What new ideas or understanding emerged?
+              </summary>
+
+              <div class="discussion-prompt-content">
+                Is there something your group understands now that was not
+                present in any of the original ideas?
+              </div>
+
+            </details>
+
+          </div>
+
+
+          <!-- BUILD OUR UNDERSTANDING -->
+
+          <div class="group-consolidation-box">
+
+            <h2>
+              🧠 Build Our Understanding
+            </h2>
+
+            <div class="group-consolidation-instruction">
+
+              Work together to create one strong statement that represents
+              what your group now understands.
+
+            </div>
+
+
+            <!-- WRITER STATUS -->
+
+            <div
+              id="consolidationWriterBanner"
+              class="consolidation-writer-banner"
+              style="display:none;"
+            ></div>
+
+            <div
+              id="consolidationReadonlyBanner"
+              class="consolidation-readonly-banner"
+              style="display:none;"
+            >
+              👀 <strong>Your role is to discuss and contribute ideas.</strong>
+              <br>
+              The designated group writer will type the group's final
+              consolidation. Please discuss your ideas with the group writer.
+            </div>
+
+
+            <textarea
+              id="consolidationInput"
+              placeholder="Write your group's consolidated thinking here..."
+            ></textarea>
+
+
+            <div class="consolidation-checklist">
+
+              <div class="consolidation-checklist-title">
+                Before submitting, check your group's thinking:
+              </div>
+
+
+              <label class="checklist-item">
+
+                <input
+                  type="checkbox"
+                  class="consolidation-check"
+                >
+
+                <span>
+                  We included or considered ideas from different group members.
+                </span>
+
+              </label>
+
+
+              <label class="checklist-item">
+
+                <input
+                  type="checkbox"
+                  class="consolidation-check"
+                >
+
+                <span>
+                  We explained our reasoning, not just our answer.
+                </span>
+
+              </label>
+
+
+              <label class="checklist-item">
+
+                <input
+                  type="checkbox"
+                  class="consolidation-check"
+                >
+
+                <span>
+                  We considered important disagreements or questions.
+                </span>
+
+              </label>
+
+
+              <label class="checklist-item">
+
+                <input
+                  type="checkbox"
+                  class="consolidation-check"
+                >
+
+                <span>
+                  Our statement shows what our group understands now.
+                </span>
+
+              </label>
+
+            </div>
+
+
+            <div
+              id="consolidationSaveStatus"
+              class="consolidation-save-status"
+            ></div>
+
+            <button
+              id="submitConsolidationButton"
+              class="consolidation-submit-button"
+            >
+              SUBMIT GROUP CONSOLIDATION
+            </button>
+
+            <div
+              id="consolidationSubmittedMessage"
+              class="consolidation-submitted-message"
+              style="display:none;"
+            ></div>
+
+          </div>
+
+
+          <!-- HOW DID OUR THINKING CHANGE? -->
+
+          <div class="thinking-change-section">
+
+            <h2>
+              🔄 How Did Our Thinking Change?
+            </h2>
+
+            <div class="thinking-change-intro">
+
+              Knowledge building is not only about getting an answer.
+              Think about how your group's understanding developed.
+
+            </div>
+
+
+            <div class="reflection-label">
+              At first, we thought...
+            </div>
+
+            <textarea
+              id="thinkingAtFirst"
+              class="reflection-input"
+              placeholder="What did your group initially think?"
+            ></textarea>
+
+
+            <div class="reflection-label">
+              Now we think...
+            </div>
+
+            <textarea
+              id="thinkingNow"
+              class="reflection-input"
+              placeholder="What does your group understand now?"
+            ></textarea>
+
+          </div>
+
+        </div>
+
+
+        <!-- ==================================================
+             WAITING
+        ================================================== -->
+
+        <div
+          id="waitingBox"
+          class="waiting"
+          style="display:none;"
+        >
+
+          <h2 id="waitingTitle">
+            ✅ Idea Submitted
+          </h2>
+
+          <p id="waitingDescription">
+            Your original idea has been saved.
+          </p>
+
+          <p id="groupWaitingMessage">
+            Waiting for the other members of your group...
+          </p>
+
+          <p>
+            Your teacher will rotate the group when everyone is ready.
+          </p>
+
+        </div>
+
+
+      </div><!-- end activity-work-panel -->
+
+    </div><!-- end activity-layout -->
+
+  </div><!-- end container -->
+
+</section>
+
+<script>
+
+
+/* ==================================================
+   SUPABASE
+================================================== */
+
+const SUPABASE_URL =
+  "https://tvbndbuxdyaavshrtuez.supabase.co";
+
+const SUPABASE_ANON_KEY =
+  "sb_publishable_nR1py6IsW4DkpgG2ByEsLA_WbStN0Ps";
+
+const FUNCTION_URL =
+  SUPABASE_URL +
+  "/functions/v1/kb-student-join";
+
+
+const supabaseClient =
+  window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_ANON_KEY,
+    {
+      auth: {
+        storageKey: "kb-student-auth",
+        persistSession: true,
+        autoRefreshToken: true,
+        detectSessionInUrl: false
+      }
+    }
+  );
+
+
+/* ==================================================
+   STATE
+================================================== */
+
+let currentSessionId = null;
+let currentStudentId = null;
+let currentGroupId = null;
+
+let currentRound = 0;
+
+let currentAssignmentId = null;
+let currentInstructionCode = null;
+let currentTargetStudentId = null;
+
+let currentTargetIdeaText = "";
+let currentTargetStudentName = "";
+
+let ideaSaveTimer = null;
+let responseSaveTimer = null;
+let consolidationSaveTimer = null;
+let reflectionSaveTimer = null;
+
+let activityPollTimer = null;
+let realtimeChannel = null;
+
+let isPaused = false;
+
+let loadedAssignmentId = null;
+let loadedRound = null;
+
+let consolidationLoaded = false;
+
+
+/* ==================================================
+   CONSOLIDATION WRITER STATE
+================================================== */
+
+/*
+  Position 1 is the designated consolidation writer.
+
+  This means:
+    position 1 = writer
+    all other positions = contributors/discussers
+*/
+
+let currentMembershipPosition = null;
+
+let currentIsConsolidationWriter = false;
+
+let consolidationWriterStudentId = null;
+
+let consolidationWriterName = "";
+
+
+/* ==================================================
+   ELEMENTS
+================================================== */
+
+const joinCodeInput =
+  document.getElementById("joinCode");
+
+const studentSelect =
+  document.getElementById("studentSelect");
+
+const rejoinCodeInput =
+  document.getElementById("rejoinCode");
+
+const joinButton =
+  document.getElementById("joinButton");
+
+const joinMessage =
+  document.getElementById("joinMessage");
+
+const ideaInput =
+  document.getElementById("ideaInput");
+
+const saveStatus =
+  document.getElementById("saveStatus");
+
+const submitIdeaButton =
+  document.getElementById("submitIdeaButton");
+
+const waitingBox =
+  document.getElementById("waitingBox");
+
+const waitingTitle =
+  document.getElementById("waitingTitle");
+
+const waitingDescription =
+  document.getElementById("waitingDescription");
+
+const groupWaitingMessage =
+  document.getElementById("groupWaitingMessage");
+
+const instructionSection =
+  document.getElementById("instructionSection");
+
+const instructionBox =
+  document.getElementById("instructionBox");
+
+const instructionSymbol =
+  document.getElementById("instructionSymbol");
+
+const instructionTitle =
+  document.getElementById("instructionTitle");
+
+const instructionDescription =
+  document.getElementById("instructionDescription");
+
+const targetStudentLabel =
+  document.getElementById("targetStudentLabel");
+
+const targetIdea =
+  document.getElementById("targetIdea");
+
+const responseInput =
+  document.getElementById("responseInput");
+
+const responseSaveStatus =
+  document.getElementById("responseSaveStatus");
+
+const submitResponseButton =
+  document.getElementById("submitResponseButton");
+
+const responseLockedMessage =
+  document.getElementById("responseLockedMessage");
+
+const roundReadyMessage =
+  document.getElementById("roundReadyMessage");
+
+const ideaLockedMessage =
+  document.getElementById("ideaLockedMessage");
+
+const roundBadge =
+  document.getElementById("roundBadge");
+
+const pausedBox =
+  document.getElementById("pausedBox");
+
+const consolidationSection =
+  document.getElementById("consolidationSection");
+
+const knowledgeGrid =
+  document.getElementById("knowledgeGrid");
+
+const consolidationInput =
+  document.getElementById("consolidationInput");
+
+const consolidationSaveStatus =
+  document.getElementById("consolidationSaveStatus");
+
+const submitConsolidationButton =
+  document.getElementById("submitConsolidationButton");
+
+const consolidationSubmittedMessage =
+  document.getElementById(
+    "consolidationSubmittedMessage"
+  );
+
+const consolidationWriterBanner =
+  document.getElementById(
+    "consolidationWriterBanner"
+  );
+
+const consolidationReadonlyBanner =
+  document.getElementById(
+    "consolidationReadonlyBanner"
+  );
+
+const thinkingAtFirst =
+  document.getElementById("thinkingAtFirst");
+
+const thinkingNow =
+  document.getElementById("thinkingNow");
+
+
+/* ==================================================
+   ANONYMOUS STUDENT SESSION
+================================================== */
+
+async function getAnonymousStudentSession() {
+
+  const {
+    data,
+    error
+  } =
+    await supabaseClient.auth.getSession();
+
+  if (error) {
+    throw error;
+  }
+
+  if (
+    data.session &&
+    data.session.user &&
+    data.session.user.is_anonymous === true
+  ) {
+    return data.session;
+  }
+
+  if (data.session) {
+    await supabaseClient.auth.signOut();
+  }
+
+  const result =
+    await supabaseClient.auth.signInAnonymously();
+
+  if (result.error) {
+    throw result.error;
+  }
+
+  if (!result.data.session) {
+    throw new Error(
+      "Could not create an anonymous student session."
+    );
+  }
+
+  return result.data.session;
+
+}
+
+
+/* ==================================================
+   LOAD STUDENTS
+================================================== */
+
+joinCodeInput.addEventListener(
+  "input",
+  async function() {
+
+    const code =
+      joinCodeInput.value.trim();
+
+    if (code.length !== 6) {
+
+      studentSelect.innerHTML =
+        `<option value="">
+          Enter the 6-digit activity code
+        </option>`;
+
+      return;
+
+    }
+
+    await loadStudents(code);
+
+  }
+);
+
+
+async function loadStudents(joinCode) {
+
+  studentSelect.innerHTML =
+    `<option value="">
+      Loading students...
+    </option>`;
+
+  joinMessage.textContent =
+    "Loading activity...";
+
+  try {
+
+    const studentSession =
+      await getAnonymousStudentSession();
+
+    const response =
+      await fetch(
+        FUNCTION_URL,
+        {
+          method: "POST",
+
+          headers: {
+            "Content-Type":
+              "application/json",
+
+            "Authorization":
+              "Bearer " +
+              studentSession.access_token
+          },
+
+          body:
+            JSON.stringify({
+              action: "list_students",
+              join_code: joinCode
+            })
+        }
+      );
+
+    const responseText =
+      await response.text();
+
+    if (!response.ok) {
+
+      throw new Error(
+        responseText ||
+        "Could not load students."
+      );
+
+    }
+
+    const result =
+      JSON.parse(responseText);
+
+    if (!result.success) {
+
+      throw new Error(
+        result.error ||
+        "Could not load students."
+      );
+
+    }
+
+    studentSelect.innerHTML =
+      `<option value="">
+        Select your name
+      </option>`;
+
+    if (
+      !result.students ||
+      result.students.length === 0
+    ) {
+
+      studentSelect.innerHTML =
+        `<option value="">
+          No students enrolled
+        </option>`;
+
+      joinMessage.textContent =
+        "No students are enrolled in this activity.";
+
+      return;
+
+    }
+
+    result.students.forEach(
+      function(student) {
+
+        const option =
+          document.createElement("option");
+
+        option.value =
+          student.id;
+
+        option.textContent =
+          student.display_name;
+
+        studentSelect.appendChild(option);
+
+      }
+    );
+
+    joinMessage.textContent =
+      "Select your name and enter your personal rejoin code.";
+
+  } catch (error) {
+
+    console.error(
+      "LOAD STUDENTS ERROR:",
+      error
+    );
+
+    studentSelect.innerHTML =
+      `<option value="">
+        Could not load students
+      </option>`;
+
+    joinMessage.textContent =
+      "Could not load the activity.\n\n" +
+      error.message;
+
+  }
+
+}
+
+
+/* ==================================================
+   JOIN
+================================================== */
+
+joinButton.addEventListener(
+  "click",
+  joinActivity
+);
+
+
+async function joinActivity() {
+
+  const joinCode =
+    joinCodeInput.value.trim();
+
+  const studentId =
+    studentSelect.value;
+
+  const rejoinCode =
+    rejoinCodeInput.value.trim();
+
+  if (!joinCode) {
+
+    joinMessage.textContent =
+      "Please enter the activity code.";
+
+    return;
+
+  }
+
+  if (!studentId) {
+
+    joinMessage.textContent =
+      "Please select your name.";
+
+    return;
+
+  }
+
+  if (!rejoinCode) {
+
+    joinMessage.textContent =
+      "Please enter your personal rejoin code.";
+
+    return;
+
+  }
+
+  joinButton.disabled =
+    true;
+
+  joinMessage.textContent =
+    "Connecting securely...";
+
+  try {
+
+    const studentSession =
+      await getAnonymousStudentSession();
+
+    const response =
+      await fetch(
+        FUNCTION_URL,
+        {
+          method: "POST",
+
+          headers: {
+            "Content-Type":
+              "application/json",
+
+            "Authorization":
+              "Bearer " +
+              studentSession.access_token
+          },
+
+          body:
+            JSON.stringify({
+              join_code: joinCode,
+              student_id: studentId,
+              rejoin_code: rejoinCode
+            })
+        }
+      );
+
+    const responseText =
+      await response.text();
+
+    if (!response.ok) {
+
+      throw new Error(
+        responseText ||
+        "Student join failed."
+      );
+
+    }
+
+    const result =
+      JSON.parse(responseText);
+
+    if (!result.success) {
+
+      throw new Error(
+        result.error ||
+        "Student join failed."
+      );
+
+    }
+
+    currentSessionId =
+      result.session_id;
+
+    currentStudentId =
+      result.student_id;
+
+    consolidationLoaded =
+      false;
+
+    await loadStudentActivity();
+
+  } catch (error) {
+
+    console.error(
+      "JOIN ERROR:",
+      error
+    );
+
+    joinMessage.textContent =
+      "Could not join activity.\n\n" +
+      error.message;
+
+    joinButton.disabled =
+      false;
+
+  }
+
+}
+
+
+/* ==================================================
+   LOAD ACTIVITY
+================================================== */
+
+async function loadStudentActivity() {
+
+  consolidationLoaded =
+    false;
+
+  const {
+    data: membership,
+    error: membershipError
+  } =
+    await supabaseClient
+      .from("kb_group_members")
+      .select(`
+        group_id,
+        position,
+        kb_groups (
+          name,
+          group_number
+        )
+      `)
+      .eq(
+        "session_id",
+        currentSessionId
+      )
+      .eq(
+        "student_id",
+        currentStudentId
+      )
+      .maybeSingle();
+
+  if (membershipError) {
+    throw membershipError;
+  }
+
+  if (!membership) {
+
+    throw new Error(
+      "You are not assigned to a group yet."
+    );
+
+  }
+
+  currentGroupId =
+    membership.group_id;
+
+  currentMembershipPosition =
+    Number(membership.position);
+
+  /*
+    Position 1 = consolidation writer.
+  */
+
+  currentIsConsolidationWriter =
+    currentMembershipPosition === 1;
+
+  const {
+    data: session,
+    error: sessionError
+  } =
+    await supabaseClient
+      .from("kb_sessions")
+      .select(`
+        title,
+        topic,
+        status,
+        is_paused,
+        question_image_path
+      `)
+      .eq(
+        "id",
+        currentSessionId
+      )
+      .single();
+
+  if (sessionError) {
+    throw sessionError;
+  }
+
+  const studentName =
+    await getStudentName();
+
+  document.getElementById(
+    "studentName"
+  ).textContent =
+    "Student: " +
+    studentName;
+
+  document.getElementById(
+    "groupName"
+  ).textContent =
+    "Group " +
+    membership.kb_groups.group_number +
+    " — " +
+    membership.kb_groups.name;
+
+  document.getElementById(
+    "topic"
+  ).textContent =
+    session.topic ||
+    "No question has been added yet.";
+
+
+
+  // ---------------------------------------------------------
+  // Question / Topic Image
+  // ---------------------------------------------------------
+
+  const topicImage =
+    document.getElementById(
+      "topicImage"
+    );
+
+  if (topicImage) {
+
+    if (session.question_image_path) {
+
+      const {
+        data: signedUrlData,
+        error: signedUrlError
+      } =
+        await supabaseClient
+          .storage
+          .from("kb-question-images")
+          .createSignedUrl(
+            session.question_image_path,
+            60 * 60
+          );
+
+      if (signedUrlError) {
+        console.error(
+          "Could not load question image:",
+          signedUrlError
+        );
+
+        topicImage.style.display =
+          "none";
+
+      } else {
+
+        topicImage.src =
+          signedUrlData.signedUrl;
+
+        topicImage.style.display =
+          "block";
+      }
+
+    } else {
+
+      topicImage.style.display =
+        "none";
+    }
+  }
+
+  document
+    .getElementById("joinScreen")
+    .classList.remove("active");
+
+  document
+    .getElementById("activityScreen")
+    .classList.add("active");
+
+  await loadExistingIdea();
+
+  await loadExistingReflection();
+
+  await loadRoundState();
+
+  startRealtime();
+
+}
+
+
+/* ==================================================
+   GET OWN NAME
+================================================== */
+
+async function getStudentName() {
+
+  const {
+    data,
+    error
+  } =
+    await supabaseClient
+      .from("kb_students")
+      .select("display_name")
+      .eq(
+        "id",
+        currentStudentId
+      )
+      .single();
+
+  if (error) {
+    throw error;
+  }
+
+  return data.display_name;
+
+}
+
+
+/* ==================================================
+   LOAD OWN IDEA
+================================================== */
+
+async function loadExistingIdea() {
+
+  const {
+    data,
+    error
+  } =
+    await supabaseClient
+      .from("kb_ideas")
+      .select(`
+        id,
+        draft_content,
+        content,
+        submitted_at
+      `)
+      .eq(
+        "session_id",
+        currentSessionId
+      )
+      .eq(
+        "student_id",
+        currentStudentId
+      )
+      .maybeSingle();
+
+  if (error) {
+    throw error;
+  }
+
+  if (!data) {
+
+    ideaInput.value = "";
+
+    submitIdeaButton.textContent =
+      "SUBMIT MY IDEA";
+
+    return;
+
+  }
+
+  ideaInput.value =
+    data.content ||
+    data.draft_content ||
+    "";
+
+  if (data.submitted_at) {
+
+    submitIdeaButton.textContent =
+      "UPDATE MY IDEA";
+
+    waitingBox.style.display =
+      "block";
+
+    waitingTitle.textContent =
+      "✅ Idea Submitted";
+
+    groupWaitingMessage.textContent =
+      "Waiting for the other members of your group...";
+
+  }
+
+}
+
+
+/* ==================================================
+   ROUND STATE
+================================================== */
+
+async function loadRoundState() {
+
+  if (
+    !currentSessionId ||
+    !currentGroupId
+  ) {
+    return;
+  }
+
+  try {
+
+    const {
+      data: groupState,
+      error: groupError
+    } =
+      await supabaseClient
+        .from("kb_group_sessions")
+        .select(`
+          current_round,
+          status
+        `)
+        .eq(
+          "session_id",
+          currentSessionId
+        )
+        .eq(
+          "group_id",
+          currentGroupId
+        )
+        .single();
+
+    if (groupError) {
+      throw groupError;
+    }
+
+    const {
+      data: session,
+      error: sessionError
+    } =
+      await supabaseClient
+        .from("kb_sessions")
+        .select(`
+          is_paused
+        `)
+        .eq(
+          "id",
+          currentSessionId
+        )
+        .single();
+
+    if (sessionError) {
+      throw sessionError;
+    }
+
+    const previousRound =
+      currentRound;
+
+    currentRound =
+      groupState.current_round || 0;
+
+    isPaused =
+      session.is_paused === true;
+
+    if (
+      currentRound !== previousRound
+    ) {
+
+      loadedAssignmentId =
+        null;
+
+      loadedRound =
+        null;
+
+      currentAssignmentId =
+        null;
+
+      currentInstructionCode =
+        null;
+
+      currentTargetStudentId =
+        null;
+
+      currentTargetIdeaText =
+        "";
+
+      currentTargetStudentName =
+        "";
+
+      responseInput.value =
+        "";
+
+      responseSaveStatus.textContent =
+        "";
+
+      responseLockedMessage.style.display =
+        "none";
+
+      roundReadyMessage.style.display =
+        "none";
+
+    }
+
+    if (
+      groupState.status !== "consolidating" &&
+      groupState.status !== "complete"
+    ) {
+
+      consolidationLoaded =
+        false;
+
+    }
+
+    updatePausedState();
+
+
+    /* ROUND 0 */
+
+    if (currentRound === 0) {
+
+      consolidationSection.style.display =
+        "none";
+
+      showThinkingState();
+
+      return;
+
+    }
+
+
+    /* WORKING */
+
+    if (
+      groupState.status === "working"
+    ) {
+
+      consolidationSection.style.display =
+        "none";
+
+      if (
+        loadedRound !== currentRound ||
+        !loadedAssignmentId
+      ) {
+
+        await loadCurrentAssignment();
+
+      } else {
+
+        showInstruction(
+          currentInstructionCode
+        );
+
+        enableCurrentResponseEditing();
+
+      }
+
+      hideWaitingBox();
+
+      return;
+
+    }
+
+
+    /* READY */
+
+    if (
+      groupState.status === "ready"
+    ) {
+
+      consolidationSection.style.display =
+        "none";
+
+      if (
+        loadedRound !== currentRound ||
+        !loadedAssignmentId
+      ) {
+
+        await loadCurrentAssignmentForReady();
+
+      } else {
+
+        showInstruction(
+          currentInstructionCode
+        );
+
+        showReadyState();
+
+      }
+
+      return;
+
+    }
+
+
+    /* CONSOLIDATION */
+
+    if (
+      groupState.status === "consolidating"
+    ) {
+
+      if (!consolidationLoaded) {
+
+        await loadConsolidationView();
+
+      } else {
+
+        /*
+          Keep non-writers updated with the writer's
+          latest saved consolidation.
+        */
+
+        if (
+          !currentIsConsolidationWriter
+        ) {
+
+          await loadExistingConsolidation(
+            true
+          );
+
+        }
+
+      }
+
+      updatePausedState();
+
+      return;
+
+    }
+
+
+    /* COMPLETE */
+
+    if (
+      groupState.status === "complete"
+    ) {
+
+      if (!consolidationLoaded) {
+
+        await loadConsolidationView();
+
+      } else {
+
+        if (
+          !currentIsConsolidationWriter
+        ) {
+
+          await loadExistingConsolidation(
+            true
+          );
+
+        }
+
+      }
+
+      showCompleteMessage();
+
+      updatePausedState();
+
+      return;
+
+    }
+
+  } catch (error) {
+
+    console.error(
+      "ROUND STATE ERROR:",
+      error
+    );
+
+  }
+
+}
+
+
+/* ==================================================
+   LOAD CURRENT ASSIGNMENT
+================================================== */
+
+async function loadCurrentAssignment() {
+
+  const currentRoundId =
+    await getCurrentRoundId();
+
+  const {
+    data: assignment,
+    error: assignmentError
+  } =
+    await supabaseClient
+      .from("kb_assignments")
+      .select(`
+        id,
+        target_student_id,
+        instruction_code,
+        round_id
+      `)
+      .eq(
+        "session_id",
+        currentSessionId
+      )
+      .eq(
+        "group_id",
+        currentGroupId
+      )
+      .eq(
+        "responder_student_id",
+        currentStudentId
+      )
+      .eq(
+        "round_id",
+        currentRoundId
+      )
+      .maybeSingle();
+
+  if (assignmentError) {
+    throw assignmentError;
+  }
+
+  if (!assignment) {
+
+    instructionSection.style.display =
+      "block";
+
+    targetIdea.textContent =
+      "Your assignment is being prepared. Please wait.";
+
+    return;
+
+  }
+
+  await displayAssignment(
+    assignment,
+    true
+  );
+
+}
+
+
+/* ==================================================
+   LOAD CURRENT ASSIGNMENT READY
+================================================== */
+
+async function loadCurrentAssignmentForReady() {
+
+  const currentRoundId =
+    await getCurrentRoundId();
+
+  const {
+    data: assignment,
+    error: assignmentError
+  } =
+    await supabaseClient
+      .from("kb_assignments")
+      .select(`
+        id,
+        target_student_id,
+        instruction_code,
+        round_id
+      `)
+      .eq(
+        "session_id",
+        currentSessionId
+      )
+      .eq(
+        "group_id",
+        currentGroupId
+      )
+      .eq(
+        "responder_student_id",
+        currentStudentId
+      )
+      .eq(
+        "round_id",
+        currentRoundId
+      )
+      .maybeSingle();
+
+  if (assignmentError) {
+    throw assignmentError;
+  }
+
+  if (!assignment) {
+
+    instructionSection.style.display =
+      "block";
+
+    targetIdea.textContent =
+      "Your current assignment is being prepared.";
+
+    return;
+
+  }
+
+  currentAssignmentId =
+    assignment.id;
+
+  currentInstructionCode =
+    assignment.instruction_code;
+
+  currentTargetStudentId =
+    assignment.target_student_id;
+
+  loadedAssignmentId =
+    assignment.id;
+
+  loadedRound =
+    currentRound;
+
+  showInstruction(
+    currentInstructionCode
+  );
+
+  if (
+    currentTargetIdeaText
+  ) {
+
+    targetStudentLabel.textContent =
+      currentTargetStudentName
+        ? "Your assigned peer: " +
+          currentTargetStudentName
+        : "Your assigned peer's idea";
+
+    targetIdea.textContent =
+      currentTargetIdeaText;
+
+  } else {
+
+    try {
+
+      await loadTargetIdea();
+
+    } catch (error) {
+
+      console.warn(
+        "Could not reload peer idea while READY:",
+        error
+      );
+
+    }
+
+  }
+
+  await loadExistingResponse();
+
+  lockOriginalIdea();
+
+  showReadyState();
+
+}
+
+
+/* ==================================================
+   DISPLAY ASSIGNMENT
+================================================== */
+
+async function displayAssignment(
+  assignment,
+  loadPeerIdea
+) {
+
+  currentAssignmentId =
+    assignment.id;
+
+  currentInstructionCode =
+    assignment.instruction_code;
+
+  currentTargetStudentId =
+    assignment.target_student_id;
+
+  loadedAssignmentId =
+    assignment.id;
+
+  loadedRound =
+    currentRound;
+
+  if (loadPeerIdea) {
+
+    await loadTargetIdea();
+
+  }
+
+  showInstruction(
+    currentInstructionCode
+  );
+
+  await loadExistingResponse();
+
+  lockOriginalIdea();
+
+  enableCurrentResponseEditing();
+
+}
+
+
+/* ==================================================
+   LOAD TARGET IDEA
+================================================== */
+
+async function loadTargetIdea() {
+
+  if (
+    !currentTargetStudentId
+  ) {
+    return;
+  }
+
+  const {
+    data: peerIdea,
+    error: peerIdeaError
+  } =
+    await supabaseClient
+      .from("kb_ideas")
+      .select(`
+        content,
+        submitted_at
+      `)
+      .eq(
+        "session_id",
+        currentSessionId
+      )
+      .eq(
+        "student_id",
+        currentTargetStudentId
+      )
+      .maybeSingle();
+
+  if (peerIdeaError) {
+    throw peerIdeaError;
+  }
+
+  if (
+    peerIdea &&
+    peerIdea.submitted_at
+  ) {
+
+    currentTargetIdeaText =
+      peerIdea.content ||
+      "(This student submitted an empty idea.)";
+
+  } else {
+
+    currentTargetIdeaText =
+      "The student's idea is not available yet.";
+
+  }
+
+  try {
+
+    const {
+      data: targetStudent,
+      error: targetStudentError
+    } =
+      await supabaseClient
+        .from("kb_students")
+        .select("display_name")
+        .eq(
+          "id",
+          currentTargetStudentId
+        )
+        .single();
+
+    if (
+      !targetStudentError &&
+      targetStudent
+    ) {
+
+      currentTargetStudentName =
+        targetStudent.display_name;
+
+    }
+
+  } catch (error) {
+
+    console.warn(
+      "Could not load target student name:",
+      error
+    );
+
+  }
+
+  targetStudentLabel.textContent =
+    currentTargetStudentName
+      ? "Your assigned peer: " +
+        currentTargetStudentName
+      : "Your assigned peer's idea";
+
+  targetIdea.textContent =
+    currentTargetIdeaText;
+
+}
+
+
+/* ==================================================
+   CURRENT ROUND ID
+================================================== */
+
+async function getCurrentRoundId() {
+
+  const {
+    data,
+    error
+  } =
+    await supabaseClient
+      .from("kb_rounds")
+      .select("id")
+      .eq(
+        "session_id",
+        currentSessionId
+      )
+      .eq(
+        "round_number",
+        currentRound
+      )
+      .single();
+
+  if (error) {
+    throw error;
+  }
+
+  return data.id;
+
+}
+
+
+/* ==================================================
+   INSTRUCTION
+================================================== */
+
+function showInstruction(code) {
+
+  instructionSection.style.display =
+    "block";
+
+  roundBadge.style.display =
+    "inline-block";
+
+  roundBadge.textContent =
+    "Round " +
+    currentRound;
+
+  instructionBox.classList.remove(
+    "add-on",
+    "disagree",
+    "question"
+  );
+
+
+  if (code === "+") {
+
+    instructionBox.classList.add(
+      "add-on"
+    );
+
+    instructionSymbol.textContent =
+      "+";
+
+    instructionTitle.textContent =
+      "ADD ON";
+
+    instructionDescription.textContent =
+      "Build on your peer's idea. Add something that develops, improves or extends the thinking.";
+
+  }
+
+  else if (code === "-") {
+
+    instructionBox.classList.add(
+      "disagree"
+    );
+
+    instructionSymbol.textContent =
+      "−";
+
+    instructionTitle.textContent =
+      "DISAGREE RESPECTFULLY";
+
+    instructionDescription.textContent =
+      "Explain what you disagree with and give a reason for your thinking.";
+
+  }
+
+  else if (code === "?") {
+
+    instructionBox.classList.add(
+      "question"
+    );
+
+    instructionSymbol.textContent =
+      "?";
+
+    instructionTitle.textContent =
+      "ASK A CLARIFYING QUESTION";
+
+    instructionDescription.textContent =
+      "Ask a question that helps you understand your peer's thinking more deeply.";
+
+  }
+
+}
+
+
+/* ==================================================
+   LOAD RESPONSE
+================================================== */
+
+async function loadExistingResponse() {
+
+  if (!currentAssignmentId) {
+    return;
+  }
+
+  const {
+    data,
+    error
+  } =
+    await supabaseClient
+      .from("kb_responses")
+      .select(`
+        draft_content,
+        content,
+        submitted_at
+      `)
+      .eq(
+        "assignment_id",
+        currentAssignmentId
+      )
+      .maybeSingle();
+
+  if (error) {
+    throw error;
+  }
+
+  if (!data) {
+
+    responseInput.value = "";
+
+    submitResponseButton.textContent =
+      "SUBMIT RESPONSE";
+
+    responseLockedMessage.style.display =
+      "none";
+
+    roundReadyMessage.style.display =
+      "none";
+
+    return;
+
+  }
+
+  responseInput.value =
+    data.content ||
+    data.draft_content ||
+    "";
+
+  if (data.submitted_at) {
+
+    submitResponseButton.textContent =
+      "UPDATE RESPONSE";
+
+    responseLockedMessage.style.display =
+      "block";
+
+    responseLockedMessage.textContent =
+      "✓ Response submitted. You can still edit it before your teacher rotates the group.";
+
+  } else {
+
+    submitResponseButton.textContent =
+      "SUBMIT RESPONSE";
+
+    responseLockedMessage.style.display =
+      "none";
+
+  }
+
+}
+
+
+/* ==================================================
+   ENABLE RESPONSE
+================================================== */
+
+function enableCurrentResponseEditing() {
+
+  if (!currentAssignmentId) {
+    return;
+  }
+
+  if (isPaused) {
+
+    responseInput.disabled =
+      true;
+
+    submitResponseButton.disabled =
+      true;
+
+    return;
+
+  }
+
+  responseInput.disabled =
+    false;
+
+  submitResponseButton.disabled =
+    false;
+
+}
+
+
+/* ==================================================
+   THINKING STATE
+================================================== */
+
+function showThinkingState() {
+
+  roundBadge.style.display =
+    "none";
+
+  instructionSection.style.display =
+    "none";
+
+  consolidationSection.style.display =
+    "none";
+
+  ideaInput.disabled =
+    isPaused;
+
+  submitIdeaButton.disabled =
+    isPaused;
+
+  ideaLockedMessage.style.display =
+    "none";
+
+  responseInput.disabled =
+    true;
+
+  submitResponseButton.disabled =
+    true;
+
+  roundReadyMessage.style.display =
+    "none";
+
+  if (
+    !ideaInput.value.trim()
+  ) {
+
+    waitingBox.style.display =
+      "none";
+
+  }
+
+}
+
+
+/* ==================================================
+   READY STATE
+================================================== */
+
+function showReadyState() {
+
+  instructionSection.style.display =
+    "block";
+
+  roundBadge.style.display =
+    "inline-block";
+
+  roundBadge.textContent =
+    "Round " +
+    currentRound;
+
+  if (
+    currentAssignmentId
+  ) {
+
+    if (!isPaused) {
+
+      responseInput.disabled =
+        false;
+
+      submitResponseButton.disabled =
+        false;
+
+    } else {
+
+      responseInput.disabled =
+        true;
+
+      submitResponseButton.disabled =
+        true;
+
+    }
+
+    roundReadyMessage.style.display =
+      "block";
+
+    roundReadyMessage.textContent =
+      "✓ Your response is submitted. You may still review or edit it while waiting for your teacher to rotate the group.";
+
+    responseLockedMessage.style.display =
+      "block";
+
+    responseLockedMessage.textContent =
+      "✓ Response submitted. You can still edit it before your teacher rotates the group.";
+
+  }
+
+  waitingBox.style.display =
+    "block";
+
+  waitingTitle.textContent =
+    "✅ Round completed";
+
+  waitingDescription.textContent =
+    "Your response has been saved.";
+
+  groupWaitingMessage.textContent =
+    "Everyone in your group has completed this round. You may still review or edit your response while waiting for your teacher to rotate the group.";
+
+}
+
+
+/* ==================================================
+   WAITING BOX
+================================================== */
+
+function hideWaitingBox() {
+
+  waitingBox.style.display =
+    "none";
+
+}
+
+
+/* ==================================================
+   RESPONSE TYPE CLASS
+================================================== */
+
+function getResponseTypeClass(code) {
+
+  if (code === "+") {
+    return "add-on";
+  }
+
+  if (code === "-") {
+    return "disagree";
+  }
+
+  if (code === "?") {
+    return "question";
+  }
+
+  return "";
+
+}
+
+
+/* ==================================================
+   CONSOLIDATION ROLE DISPLAY
+================================================== */
+
+function updateConsolidationWriterUI() {
+
+  if (
+    currentIsConsolidationWriter
+  ) {
+
+    consolidationWriterBanner.style.display =
+      "block";
+
+    consolidationWriterBanner.innerHTML =
+      "✍️ <strong>You are the group consolidation writer.</strong><br>" +
+      "Discuss with your group and type the final shared understanding here.";
+
+    consolidationReadonlyBanner.style.display =
+      "none";
+
+    consolidationInput.classList.remove(
+      "read-only-consolidation"
+    );
+
+    consolidationInput.disabled =
+      isPaused;
+
+    submitConsolidationButton.style.display =
+      "block";
+
+    submitConsolidationButton.disabled =
+      isPaused;
+
+  } else {
+
+    consolidationWriterBanner.style.display =
+      "none";
+
+    consolidationReadonlyBanner.style.display =
+      "block";
+
+    consolidationInput.classList.add(
+      "read-only-consolidation"
+    );
+
+    consolidationInput.disabled =
+      true;
+
+    submitConsolidationButton.style.display =
+      "none";
+
+  }
+
+}
+
+
+/* ==================================================
+   CONSOLIDATION
+================================================== */
+
+async function loadConsolidationView() {
+
+  consolidationSection.style.display =
+    "block";
+
+  ideaInput.disabled =
+    true;
+
+  submitIdeaButton.disabled =
+    true;
+
+  instructionSection.style.display =
+    "none";
+
+  waitingBox.style.display =
+    "none";
+
+  roundBadge.style.display =
+    "inline-block";
+
+  roundBadge.textContent =
+    "Group consolidation";
+
+
+  updateConsolidationWriterUI();
+
+
+  try {
+
+    const {
+      data,
+      error
+    } =
+      await supabaseClient.rpc(
+        "kb_get_consolidation_knowledge",
+        {
+          p_session_id:
+            currentSessionId,
+
+          p_group_id:
+            currentGroupId
+        }
+      );
+
+    if (error) {
+      throw error;
+    }
+
+    if (!data) {
+
+      throw new Error(
+        "No consolidation data was returned."
+      );
+
+    }
+
+    const members =
+      Array.isArray(data.members)
+        ? data.members
+        : [];
+
+    const ideas =
+      Array.isArray(data.ideas)
+        ? data.ideas
+        : [];
+
+    const responses =
+      Array.isArray(data.responses)
+        ? data.responses
+        : [];
+
+
+    if (
+      members.length === 0
+    ) {
+
+      throw new Error(
+        "No group members could be loaded."
+      );
+
+    }
+
+
+    /* ==================================================
+       DETERMINE WRITER
+    ================================================== */
+
+    const writer =
+      members.find(
+        function(member) {
+
+          return Number(
+            member.position
+          ) === 1;
+
+        }
+      );
+
+
+    if (writer) {
+
+      consolidationWriterStudentId =
+        writer.student_id;
+
+      consolidationWriterName =
+        writer.display_name;
+
+    }
+
+
+    /*
+      Re-confirm the current user's role from the
+      actual group membership returned by the RPC.
+    */
+
+    currentIsConsolidationWriter =
+      currentStudentId ===
+      consolidationWriterStudentId;
+
+
+    updateConsolidationWriterUI();
+
+
+    /* ==================================================
+       NAME MAP
+    ================================================== */
+
+    const studentNameMap = {};
+
+    members.forEach(
+      function(member) {
+
+        studentNameMap[
+          member.student_id
+        ] =
+          member.display_name;
+
+      }
+    );
+
+
+    /* ==================================================
+       IDEA MAP
+    ================================================== */
+
+    const ideaMap = {};
+
+    ideas.forEach(
+      function(idea) {
+
+        ideaMap[
+          idea.student_id
+        ] =
+          idea;
+
+      }
+    );
+
+
+    /* ==================================================
+       RESPONSE MAP
+    ================================================== */
+
+    const responseMap = {};
+
+    members.forEach(
+      function(member) {
+
+        responseMap[
+          member.student_id
+        ] = [];
+
+      }
+    );
+
+
+    responses.forEach(
+      function(response) {
+
+        if (
+          !responseMap[
+            response.target_student_id
+          ]
+        ) {
+
+          responseMap[
+            response.target_student_id
+          ] = [];
+
+        }
+
+        responseMap[
+          response.target_student_id
+        ].push(response);
+
+      }
+    );
+
+
+    /* ==================================================
+       SORT RESPONSES
+    ================================================== */
+
+    Object.keys(
+      responseMap
+    ).forEach(
+      function(studentId) {
+
+        responseMap[
+          studentId
+        ].sort(
+          function(a, b) {
+
+            const roundA =
+              Number(
+                a.round_number || 0
+              );
+
+            const roundB =
+              Number(
+                b.round_number || 0
+              );
+
+            if (
+              roundA !== roundB
+            ) {
+
+              return roundA - roundB;
+
+            }
+
+            return (
+              new Date(
+                a.submitted_at || 0
+              ) -
+              new Date(
+                b.submitted_at || 0
+              )
+            );
+
+          }
+        );
+
+      }
+    );
+
+
+    /* ==================================================
+       BUILD KNOWLEDGE GRID
+    ================================================== */
+
+    knowledgeGrid.innerHTML =
+      "";
+
+    knowledgeGrid.style.setProperty(
+      "--student-count",
+      Math.max(
+        members.length,
+        1
+      )
+    );
+
+
+    members.forEach(
+      function(member) {
+
+        const idea =
+          ideaMap[
+            member.student_id
+          ];
+
+        const column =
+          document.createElement("div");
+
+        column.className =
+          "knowledge-column";
+
+
+        /* HEADER */
+
+        const header =
+          document.createElement("div");
+
+        header.className =
+          "knowledge-column-header";
+
+        const headerTitle =
+          document.createElement("h3");
+
+        headerTitle.textContent =
+          studentNameMap[
+            member.student_id
+          ] ||
+          "Student";
+
+        const headerLabel =
+          document.createElement("div");
+
+        headerLabel.className =
+          "original-idea-label";
+
+        headerLabel.textContent =
+          "ORIGINAL IDEA";
+
+        header.appendChild(
+          headerTitle
+        );
+
+        header.appendChild(
+          headerLabel
+        );
+
+
+        /* SCROLL */
+
+        const scroll =
+          document.createElement("div");
+
+        scroll.className =
+          "knowledge-scroll";
+
+
+        /* ORIGINAL IDEA */
+
+        const originalCard =
+          document.createElement("div");
+
+        originalCard.className =
+          "original-idea-card";
+
+        const originalTitle =
+          document.createElement("h4");
+
+        originalTitle.textContent =
+          "💡 Original idea";
+
+        const originalText =
+          document.createElement("div");
+
+        originalText.className =
+          "original-idea-text";
+
+        originalText.textContent =
+          idea &&
+          idea.content
+            ? idea.content
+            : "(No idea submitted.)";
+
+        originalCard.appendChild(
+          originalTitle
+        );
+
+        originalCard.appendChild(
+          originalText
+        );
+
+        scroll.appendChild(
+          originalCard
+        );
+
+
+        /* RESPONSES */
+
+        const targetResponses =
+          responseMap[
+            member.student_id
+          ] || [];
+
+
+        if (
+          targetResponses.length === 0
+        ) {
+
+          const noResponses =
+            document.createElement("div");
+
+          noResponses.className =
+            "no-responses";
+
+          noResponses.textContent =
+            "No building responses.";
+
+          scroll.appendChild(
+            noResponses
+          );
+
+        } else {
+
+          targetResponses.forEach(
+            function(response) {
+
+              const typeClass =
+                getResponseTypeClass(
+                  response.instruction_code
+                );
+
+              const responseBox =
+                document.createElement("div");
+
+              responseBox.className =
+                "building-response " +
+                typeClass;
+
+
+              const responseHeader =
+                document.createElement("div");
+
+              responseHeader.className =
+                "building-response-header";
+
+
+              const symbol =
+                document.createElement("div");
+
+              symbol.className =
+                "response-symbol-small";
+
+              symbol.textContent =
+                response.instruction_code === "-"
+                  ? "−"
+                  : response.instruction_code;
+
+
+              const round =
+                document.createElement("div");
+
+              round.className =
+                "response-round";
+
+              round.textContent =
+                "ROUND " +
+                (
+                  response.round_number ||
+                  "?"
+                );
+
+
+              const author =
+                document.createElement("div");
+
+              author.className =
+                "response-author";
+
+              author.textContent =
+                studentNameMap[
+                  response.responder_student_id
+                ] ||
+                "Student";
+
+
+              responseHeader.appendChild(
+                symbol
+              );
+
+              responseHeader.appendChild(
+                round
+              );
+
+              responseHeader.appendChild(
+                author
+              );
+
+
+              const responseText =
+                document.createElement("div");
+
+              responseText.className =
+                "building-response-text";
+
+              responseText.textContent =
+                response.content ||
+                "(No response text.)";
+
+
+              responseBox.appendChild(
+                responseHeader
+              );
+
+              responseBox.appendChild(
+                responseText
+              );
+
+              scroll.appendChild(
+                responseBox
+              );
+
+            }
+          );
+
+        }
+
+
+        column.appendChild(
+          header
+        );
+
+        column.appendChild(
+          scroll
+        );
+
+        knowledgeGrid.appendChild(
+          column
+        );
+
+      }
+    );
+
+
+    /* LOAD SHARED CONSOLIDATION */
+
+    await loadExistingConsolidation();
+
+
+    /*
+      Reflection remains individual/local,
+      exactly as before.
+    */
+
+    await loadExistingReflection();
+
+
+    consolidationLoaded =
+      true;
+
+    updatePausedState();
+
+
+  } catch (error) {
+
+    console.error(
+      "CONSOLIDATION LOAD ERROR:",
+      error
+    );
+
+    consolidationLoaded =
+      false;
+
+    knowledgeGrid.innerHTML =
+      `<div style="
+        background:white;
+        padding:25px;
+        border-radius:15px;
+        color:#b91c1c;
+        font-size:18px;
+      ">
+        Could not load your group's knowledge.
+        Please wait a moment and try again.
+      </div>`;
+
+  }
+
+}
+
+
+/* ==================================================
+   LOAD EXISTING CONSOLIDATION
+================================================== */
+
+async function loadExistingConsolidation(
+  silentRefresh = false
+) {
+
+  /*
+    The writer should not have their live typing
+    overwritten by the polling process.
+
+    Non-writers are allowed to refresh automatically.
+  */
+
+  if (
+    !currentIsConsolidationWriter &&
+    consolidationInput.dataset.userEditing ===
+    "true" &&
+    !silentRefresh
+  ) {
+
+    return;
+
+  }
+
+
+  if (
+    currentIsConsolidationWriter &&
+    consolidationInput.dataset.userEditing ===
+    "true" &&
+    !silentRefresh
+  ) {
+
+    return;
+
+  }
+
+
+  const {
+    data,
+    error
+  } =
+    await supabaseClient
+      .from("kb_consolidations")
+      .select(`
+        draft_content,
+        content,
+        submitted_at
+      `)
+      .eq(
+        "session_id",
+        currentSessionId
+      )
+      .eq(
+        "group_id",
+        currentGroupId
+      )
+      .maybeSingle();
+
+  if (error) {
+    throw error;
+  }
+
+  if (!data) {
+
+    if (
+      !consolidationInput.dataset.userEditing ||
+      consolidationInput.dataset.userEditing !==
+      "true"
+    ) {
+
+      consolidationInput.value =
+        "";
+
+    }
+
+    submitConsolidationButton.textContent =
+      "SUBMIT GROUP CONSOLIDATION";
+
+    consolidationSubmittedMessage.style.display =
+      "none";
+
+    return;
+
+  }
+
+
+  /*
+    For the writer, don't overwrite active typing.
+    For everyone else, always show the latest saved
+    group version.
+  */
+
+  if (
+    !currentIsConsolidationWriter ||
+    consolidationInput.dataset.userEditing !==
+    "true"
+  ) {
+
+    consolidationInput.value =
+      data.content ||
+      data.draft_content ||
+      "";
+
+  }
+
+
+  if (
+    data.submitted_at
+  ) {
+
+    submitConsolidationButton.textContent =
+      "UPDATE GROUP CONSOLIDATION";
+
+    consolidationSubmittedMessage.style.display =
+      "block";
+
+    consolidationSubmittedMessage.textContent =
+      "✓ Your group consolidation has been submitted. Your group may still edit it while the activity remains open.";
+
+  } else {
+
+    submitConsolidationButton.textContent =
+      "SUBMIT GROUP CONSOLIDATION";
+
+    consolidationSubmittedMessage.style.display =
+      "none";
+
+  }
+
+
+  updateConsolidationWriterUI();
+
+}
+
+
+/* ==================================================
+   CONSOLIDATION INPUT
+================================================== */
+
+consolidationInput.addEventListener(
+  "focus",
+  function() {
+
+    if (
+      !currentIsConsolidationWriter
+    ) {
+
+      return;
+
+    }
+
+    consolidationInput.dataset.userEditing =
+      "true";
+
+  }
+);
+
+
+consolidationInput.addEventListener(
+  "input",
+  function() {
+
+    if (
+      !currentIsConsolidationWriter
+    ) {
+
+      return;
+
+    }
+
+    if (isPaused) {
+      return;
+    }
+
+    consolidationInput.dataset.userEditing =
+      "true";
+
+    consolidationSaveStatus.textContent =
+      "Saving draft...";
+
+    clearTimeout(
+      consolidationSaveTimer
+    );
+
+    consolidationSaveTimer =
+      setTimeout(
+        saveConsolidationDraft,
+        700
+      );
+
+  }
+);
+
+
+/* ==================================================
+   SAVE CONSOLIDATION DRAFT
+================================================== */
+
+async function saveConsolidationDraft() {
+
+  if (
+    !currentSessionId ||
+    !currentGroupId ||
+    isPaused ||
+    !currentIsConsolidationWriter
+  ) {
+    return;
+  }
+
+  const text =
+    consolidationInput.value;
+
+  try {
+
+    const {
+      error
+    } =
+      await supabaseClient
+        .from("kb_consolidations")
+        .upsert(
+          {
+            session_id:
+              currentSessionId,
+
+            group_id:
+              currentGroupId,
+
+            draft_content:
+              text,
+
+            updated_at:
+              new Date().toISOString()
+          },
+          {
+            onConflict:
+              "session_id,group_id"
+          }
+        );
+
+    if (error) {
+      throw error;
+    }
+
+    consolidationSaveStatus.textContent =
+      "✓ Draft saved";
+
+  } catch (error) {
+
+    console.error(
+      "CONSOLIDATION DRAFT ERROR:",
+      error
+    );
+
+    consolidationSaveStatus.textContent =
+      "⚠ Save failed: " +
+      error.message;
+
+  }
+
+}
+
+
+/* ==================================================
+   SUBMIT CONSOLIDATION
+================================================== */
+
+submitConsolidationButton.addEventListener(
+  "click",
+  submitConsolidation
+);
+
+
+async function submitConsolidation() {
+
+  if (
+    !currentIsConsolidationWriter
+  ) {
+
+    consolidationSaveStatus.textContent =
+      "Only the designated group writer can submit the consolidation.";
+
+    return;
+
+  }
+
+  if (isPaused) {
+
+    consolidationSaveStatus.textContent =
+      "Activity is currently paused.";
+
+    return;
+
+  }
+
+  const content =
+    consolidationInput.value.trim();
+
+  if (!content) {
+
+    consolidationSaveStatus.textContent =
+      "Please write your group's consolidated thinking first.";
+
+    return;
+
+  }
+
+  submitConsolidationButton.disabled =
+    true;
+
+  consolidationSaveStatus.textContent =
+    "Saving group consolidation...";
+
+  clearTimeout(
+    consolidationSaveTimer
+  );
+
+  try {
+
+    const {
+      error
+    } =
+      await supabaseClient
+        .from("kb_consolidations")
+        .upsert(
+          {
+            session_id:
+              currentSessionId,
+
+            group_id:
+              currentGroupId,
+
+            draft_content:
+              content,
+
+            content:
+              content,
+
+            updated_at:
+              new Date().toISOString(),
+
+            submitted_at:
+              new Date().toISOString()
+          },
+          {
+            onConflict:
+              "session_id,group_id"
+          }
+        );
+
+    if (error) {
+      throw error;
+    }
+
+    consolidationInput.value =
+      content;
+
+    consolidationSaveStatus.textContent =
+      "✓ Group consolidation submitted";
+
+    submitConsolidationButton.textContent =
+      "UPDATE GROUP CONSOLIDATION";
+
+    consolidationSubmittedMessage.style.display =
+      "block";
+
+    consolidationSubmittedMessage.textContent =
+      "✓ Your group consolidation has been submitted. Your group may still edit it while the activity remains open.";
+
+  } catch (error) {
+
+    console.error(
+      "CONSOLIDATION SUBMIT ERROR:",
+      error
+    );
+
+    consolidationSaveStatus.textContent =
+      "⚠ Submission failed: " +
+      error.message;
+
+  } finally {
+
+    if (!isPaused) {
+
+      submitConsolidationButton.disabled =
+        false;
+
+    }
+
+  }
+
+}
+
+
+/* ==================================================
+   REFLECTION
+================================================== */
+
+async function loadExistingReflection() {
+
+  /*
+    Reflection is stored locally for now so this new
+    section does not require another database table.
+    The shared consolidation remains server-saved.
+  */
+
+  const storageKey =
+    "kb-reflection-" +
+    currentSessionId +
+    "-" +
+    currentGroupId;
+
+  try {
+
+    const saved =
+      localStorage.getItem(
+        storageKey
+      );
+
+    if (!saved) {
+      return;
+    }
+
+    const data =
+      JSON.parse(saved);
+
+    thinkingAtFirst.value =
+      data.atFirst || "";
+
+    thinkingNow.value =
+      data.now || "";
+
+  } catch (error) {
+
+    console.warn(
+      "Could not load reflection:",
+      error
+    );
+
+  }
+
+}
+
+
+function saveReflectionDraft() {
+
+  if (
+    !currentSessionId ||
+    !currentGroupId ||
+    isPaused
+  ) {
+    return;
+  }
+
+  const storageKey =
+    "kb-reflection-" +
+    currentSessionId +
+    "-" +
+    currentGroupId;
+
+  try {
+
+    localStorage.setItem(
+      storageKey,
+      JSON.stringify({
+        atFirst:
+          thinkingAtFirst.value,
+
+        now:
+          thinkingNow.value
+      })
+    );
+
+  } catch (error) {
+
+    console.warn(
+      "Could not save reflection:",
+      error
+    );
+
+  }
+
+}
+
+
+thinkingAtFirst.addEventListener(
+  "input",
+  function() {
+
+    clearTimeout(
+      reflectionSaveTimer
+    );
+
+    reflectionSaveTimer =
+      setTimeout(
+        saveReflectionDraft,
+        400
+      );
+
+  }
+);
+
+
+thinkingNow.addEventListener(
+  "input",
+  function() {
+
+    clearTimeout(
+      reflectionSaveTimer
+    );
+
+    reflectionSaveTimer =
+      setTimeout(
+        saveReflectionDraft,
+        400
+      );
+
+  }
+);
+
+
+/* ==================================================
+   PAUSED STATE
+================================================== */
+
+function updatePausedState() {
+
+  pausedBox.style.display =
+    isPaused
+      ? "block"
+      : "none";
+
+
+  if (isPaused) {
+
+    ideaInput.disabled =
+      true;
+
+    submitIdeaButton.disabled =
+      true;
+
+    responseInput.disabled =
+      true;
+
+    submitResponseButton.disabled =
+      true;
+
+    consolidationInput.disabled =
+      true;
+
+    submitConsolidationButton.disabled =
+      true;
+
+    thinkingAtFirst.disabled =
+      true;
+
+    thinkingNow.disabled =
+      true;
+
+    return;
+
+  }
+
+
+  if (
+    currentRound === 0
+  ) {
+
+    ideaInput.disabled =
+      false;
+
+    submitIdeaButton.disabled =
+      false;
+
+  } else {
+
+    ideaInput.disabled =
+      true;
+
+    submitIdeaButton.disabled =
+      true;
+
+    if (
+      currentAssignmentId
+    ) {
+
+      responseInput.disabled =
+        false;
+
+      submitResponseButton.disabled =
+        false;
+
+    } else {
+
+      responseInput.disabled =
+        true;
+
+      submitResponseButton.disabled =
+        true;
+
+    }
+
+  }
+
+
+  if (
+    consolidationSection.style.display !==
+    "none"
+  ) {
+
+    /*
+      Only the designated writer can edit the
+      shared consolidation.
+    */
+
+    if (
+      currentIsConsolidationWriter
+    ) {
+
+      consolidationInput.disabled =
+        false;
+
+      submitConsolidationButton.disabled =
+        false;
+
+    } else {
+
+      consolidationInput.disabled =
+        true;
+
+      submitConsolidationButton.disabled =
+        true;
+
+    }
+
+    thinkingAtFirst.disabled =
+      false;
+
+    thinkingNow.disabled =
+      false;
+
+  }
+
+}
+
+
+/* ==================================================
+   COMPLETE
+================================================== */
+
+function showCompleteMessage() {
+
+  roundBadge.style.display =
+    "inline-block";
+
+  roundBadge.textContent =
+    "Activity complete";
+
+  instructionSection.style.display =
+    "none";
+
+  waitingBox.style.display =
+    "none";
+
+  consolidationSection.style.display =
+    "block";
+
+  updateConsolidationWriterUI();
+
+}
+
+
+/* ==================================================
+   LOCK ORIGINAL IDEA
+================================================== */
+
+function lockOriginalIdea() {
+
+  ideaInput.disabled =
+    true;
+
+  submitIdeaButton.disabled =
+    true;
+
+  ideaLockedMessage.style.display =
+    "block";
+
+}
+
+
+/* ==================================================
+   IDEA INPUT
+================================================== */
+
+ideaInput.addEventListener(
+  "input",
+  function() {
+
+    if (
+      currentRound !== 0 ||
+      isPaused
+    ) {
+      return;
+    }
+
+    saveStatus.textContent =
+      "Saving...";
+
+    clearTimeout(
+      ideaSaveTimer
+    );
+
+    ideaSaveTimer =
+      setTimeout(
+        saveIdeaDraft,
+        700
+      );
+
+  }
+);
+
+
+/* ==================================================
+   SAVE IDEA DRAFT
+================================================== */
+
+async function saveIdeaDraft() {
+
+  if (
+    !currentSessionId ||
+    !currentStudentId ||
+    !currentGroupId ||
+    currentRound !== 0 ||
+    isPaused
+  ) {
+    return;
+  }
+
+  const text =
+    ideaInput.value;
+
+  try {
+
+    const {
+      error
+    } =
+      await supabaseClient
+        .from("kb_ideas")
+        .upsert(
+          {
+            session_id:
+              currentSessionId,
+
+            group_id:
+              currentGroupId,
+
+            student_id:
+              currentStudentId,
+
+            draft_content:
+              text,
+
+            updated_at:
+              new Date().toISOString()
+          },
+          {
+            onConflict:
+              "session_id,student_id"
+          }
+        );
+
+    if (error) {
+      throw error;
+    }
+
+    saveStatus.textContent =
+      "✓ Saved";
+
+  } catch (error) {
+
+    console.error(
+      "IDEA SAVE ERROR:",
+      error
+    );
+
+    saveStatus.textContent =
+      "⚠ Save failed: " +
+      error.message;
+
+  }
+
+}
+
+
+/* ==================================================
+   SUBMIT IDEA
+================================================== */
+
+submitIdeaButton.addEventListener(
+  "click",
+  submitIdea
+);
+
+
+async function submitIdea() {
+
+  if (
+    currentRound !== 0
+  ) {
+    return;
+  }
+
+  if (isPaused) {
+
+    saveStatus.textContent =
+      "Activity is currently paused.";
+
+    return;
+
+  }
+
+  const content =
+    ideaInput.value.trim();
+
+  if (!content) {
+
+    saveStatus.textContent =
+      "Please write an idea first.";
+
+    return;
+
+  }
+
+  submitIdeaButton.disabled =
+    true;
+
+  saveStatus.textContent =
+    "Submitting...";
+
+  clearTimeout(
+    ideaSaveTimer
+  );
+
+  try {
+
+    const {
+      error
+    } =
+      await supabaseClient
+        .from("kb_ideas")
+        .upsert(
+          {
+            session_id:
+              currentSessionId,
+
+            group_id:
+              currentGroupId,
+
+            student_id:
+              currentStudentId,
+
+            draft_content:
+              content,
+
+            content:
+              content,
+
+            submitted_at:
+              new Date().toISOString(),
+
+            updated_at:
+              new Date().toISOString()
+          },
+          {
+            onConflict:
+              "session_id,student_id"
+          }
+        );
+
+    if (error) {
+      throw error;
+    }
+
+    saveStatus.textContent =
+      "✓ Submitted successfully";
+
+    submitIdeaButton.textContent =
+      "UPDATE MY IDEA";
+
+    waitingBox.style.display =
+      "block";
+
+    waitingTitle.textContent =
+      "✅ Idea Submitted";
+
+    waitingDescription.textContent =
+      "Your original idea has been saved.";
+
+    groupWaitingMessage.textContent =
+      "Waiting for the other members of your group...";
+
+  } catch (error) {
+
+    console.error(
+      "IDEA SUBMIT ERROR:",
+      error
+    );
+
+    saveStatus.textContent =
+      "⚠ Submission failed: " +
+      error.message;
+
+  } finally {
+
+    if (
+      currentRound === 0 &&
+      !isPaused
+    ) {
+
+      submitIdeaButton.disabled =
+        false;
+
+    }
+
+  }
+
+}
+
+
+/* ==================================================
+   RESPONSE INPUT
+================================================== */
+
+responseInput.addEventListener(
+  "input",
+  function() {
+
+    if (
+      !currentAssignmentId ||
+      currentRound === 0 ||
+      isPaused
+    ) {
+      return;
+    }
+
+    if (
+      submitResponseButton.textContent ===
+      "UPDATE RESPONSE"
+    ) {
+
+      responseSaveStatus.textContent =
+        "Editing — click UPDATE RESPONSE to save the edited response.";
+
+    } else {
+
+      responseSaveStatus.textContent =
+        "Saving...";
+
+    }
+
+    clearTimeout(
+      responseSaveTimer
+    );
+
+    responseSaveTimer =
+      setTimeout(
+        saveResponseDraft,
+        700
+      );
+
+  }
+);
+
+
+/* ==================================================
+   SAVE RESPONSE DRAFT
+================================================== */
+
+async function saveResponseDraft() {
+
+  if (
+    !currentAssignmentId ||
+    !currentSessionId ||
+    !currentStudentId ||
+    !currentGroupId ||
+    isPaused
+  ) {
+    return;
+  }
+
+  const text =
+    responseInput.value;
+
+  try {
+
+    const {
+      error
+    } =
+      await supabaseClient
+        .from("kb_responses")
+        .upsert(
+          {
+            assignment_id:
+              currentAssignmentId,
+
+            session_id:
+              currentSessionId,
+
+            group_id:
+              currentGroupId,
+
+            responder_student_id:
+              currentStudentId,
+
+            target_student_id:
+              currentTargetStudentId,
+
+            instruction_code:
+              currentInstructionCode,
+
+            draft_content:
+              text,
+
+            updated_at:
+              new Date().toISOString()
+          },
+          {
+            onConflict:
+              "assignment_id"
+          }
+        );
+
+    if (error) {
+      throw error;
+    }
+
+    if (
+      submitResponseButton.textContent !==
+      "UPDATE RESPONSE"
+    ) {
+
+      responseSaveStatus.textContent =
+        "✓ Saved";
+
+    }
+
+  } catch (error) {
+
+    console.error(
+      "RESPONSE SAVE ERROR:",
+      error
+    );
+
+    responseSaveStatus.textContent =
+      "⚠ Save failed: " +
+      error.message;
+
+  }
+
+}
+
+
+/* ==================================================
+   SUBMIT RESPONSE
+================================================== */
+
+submitResponseButton.addEventListener(
+  "click",
+  submitResponse
+);
+
+
+async function submitResponse() {
+
+  if (!currentAssignmentId) {
+
+    responseSaveStatus.textContent =
+      "Your assignment is not ready yet.";
+
+    return;
+
+  }
+
+  if (isPaused) {
+
+    responseSaveStatus.textContent =
+      "Activity is currently paused.";
+
+    return;
+
+  }
+
+  const content =
+    responseInput.value.trim();
+
+  if (!content) {
+
+    responseSaveStatus.textContent =
+      "Please write a response first.";
+
+    return;
+
+  }
+
+  submitResponseButton.disabled =
+    true;
+
+  responseSaveStatus.textContent =
+    "Saving response...";
+
+  clearTimeout(
+    responseSaveTimer
+  );
+
+  try {
+
+    const {
+      error
+    } =
+      await supabaseClient
+        .from("kb_responses")
+        .upsert(
+          {
+            assignment_id:
+              currentAssignmentId,
+
+            session_id:
+              currentSessionId,
+
+            group_id:
+              currentGroupId,
+
+            responder_student_id:
+              currentStudentId,
+
+            target_student_id:
+              currentTargetStudentId,
+
+            instruction_code:
+              currentInstructionCode,
+
+            draft_content:
+              content,
+
+            content:
+              content,
+
+            submitted_at:
+              new Date().toISOString(),
+
+            updated_at:
+              new Date().toISOString()
+          },
+          {
+            onConflict:
+              "assignment_id"
+          }
+        );
+
+    if (error) {
+      throw error;
+    }
+
+    responseInput.value =
+      content;
+
+    responseSaveStatus.textContent =
+      "✓ Response submitted successfully";
+
+    submitResponseButton.textContent =
+      "UPDATE RESPONSE";
+
+    responseLockedMessage.style.display =
+      "block";
+
+    responseLockedMessage.textContent =
+      "✓ Response submitted. You can still edit it before your teacher rotates the group.";
+
+    roundReadyMessage.style.display =
+      "block";
+
+    roundReadyMessage.textContent =
+      "✓ Your response is submitted. You may still review or edit it while waiting for your teacher to rotate the group.";
+
+    await loadRoundState();
+
+  } catch (error) {
+
+    console.error(
+      "RESPONSE SUBMIT ERROR:",
+      error
+    );
+
+    responseSaveStatus.textContent =
+      "⚠ Submission failed: " +
+      error.message;
+
+  } finally {
+
+    if (!isPaused) {
+
+      submitResponseButton.disabled =
+        false;
+
+    }
+
+  }
+
+}
+
+
+/* ==================================================
+   REALTIME + POLLING
+================================================== */
+
+function startRealtime() {
+
+  if (realtimeChannel) {
+
+    supabaseClient.removeChannel(
+      realtimeChannel
+    );
+
+  }
+
+  if (activityPollTimer) {
+
+    clearInterval(
+      activityPollTimer
+    );
+
+  }
+
+  realtimeChannel =
+    supabaseClient
+      .channel(
+        "kb-student-group-" +
+        currentGroupId
+      )
+      .on(
+        "postgres_changes",
+        {
+          event: "*",
+          schema: "public",
+          table: "kb_group_sessions",
+          filter:
+            "group_id=eq." +
+            currentGroupId
+        },
+        async function() {
+
+          await loadRoundState();
+
+        }
+      )
+      .subscribe();
+
+  activityPollTimer =
+    setInterval(
+      async function() {
+
+        await loadRoundState();
+
+      },
+      3000
+    );
+
+}
+
+
+/* ==================================================
+   PAGE SAFETY
+================================================== */
+
+window.addEventListener(
+  "beforeunload",
+  function() {
+
+    if (activityPollTimer) {
+
+      clearInterval(
+        activityPollTimer
+      );
+
+    }
+
+    if (realtimeChannel) {
+
+      supabaseClient.removeChannel(
+        realtimeChannel
+      );
+
+    }
+
+  }
+);
+
+</script>
+
+</body>
+</html>
